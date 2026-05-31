@@ -5,7 +5,14 @@ import DataBrokerList from './components/DataBrokerList';
 import DataValueEstimator from './components/DataValueEstimator';
 import SummaryBanner from './components/SummaryBanner';
 
+const TABS = [
+  { id: 'breach', label: 'Breach Check' },
+  { id: 'brokers', label: 'Data Brokers' },
+  { id: 'value', label: 'Data Value' },
+];
+
 export default function App() {
+  const [activeTab, setActiveTab] = useState('breach');
   const [breachData, setBreachData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchedEmail, setSearchedEmail] = useState('');
@@ -30,6 +37,7 @@ export default function App() {
     setIsLoading(true);
     setSearchedEmail(email);
     setBreachData(null);
+    setActiveTab('breach');
     try {
       const res = await fetch(`/api/breach/${encodeURIComponent(email)}`);
       const data = await res.json();
@@ -41,71 +49,71 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    if (breachData && !breachData.error) {
-      const el = document.getElementById('breach-results');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [breachData]);
-
   const breachCount = breachData?.breaches?.length ?? 0;
   const showSummary = breachData !== null && estimatedValue > 0;
+  const breachDataClasses = breachData?.breaches?.flatMap(b => b.DataClasses) ?? [];
 
   return (
-    <div className="min-h-screen bg-[#0F0F0F] text-white pb-28">
-      <div className="bg-[#1A1A1A] border-b border-[#2D2D2D] py-3 px-4 text-center text-sm text-[#718096]">
+    <div className="min-h-screen bg-[#F7F8FA] text-gray-900 pb-28">
+      {/* Privacy banner */}
+      <div className="bg-[#F3F4F6] border-b border-[#E5E7EB] py-3 px-4 text-center text-sm text-[#6B7280]">
         DataTrace does not store your email address or any personal information.
         Your email is sent directly to HaveIBeenPwned's API and is never saved to any database.
         Opt-out progress is stored locally in your browser only.
       </div>
 
-      <header className="max-w-4xl mx-auto px-4 pt-14 pb-8 text-center">
-        <h1 className="text-5xl font-black text-white tracking-tight mb-4">
-          Data<span className="text-red-500">Trace</span>
-        </h1>
-        <p className="text-lg text-[#A0AEC0] max-w-xl mx-auto leading-relaxed">
-          Understand how your personal data is exposed, which data brokers hold your information,
-          and what your digital profile is worth to advertisers.
-        </p>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 space-y-16">
-        <div className="max-w-4xl mx-auto">
-          <section id="breach-checker">
-            <HomePage onSearch={handleSearch} isLoading={isLoading} />
-          </section>
+      {/* Header */}
+      <header className="bg-white border-b border-[#E5E7EB]">
+        <div className="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
+          <h1 className="text-5xl font-black text-[#111827] tracking-tight mb-4">
+            Data<span className="text-red-600">Trace</span>
+          </h1>
+          <p className="text-lg text-[#6B7280] max-w-xl mx-auto leading-relaxed">
+            Understand how your personal data is exposed, which data brokers hold your information,
+            and what your digital profile is worth to advertisers.
+          </p>
         </div>
 
-        {(breachData || isLoading) ? (
-          <section id="breach-results">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              <div className="lg:sticky lg:top-6">
-                <BreachResults data={breachData} email={searchedEmail} isLoading={isLoading} />
-              </div>
-              <div>
-                <DataBrokerList
-                  breachDataClasses={breachData?.breaches?.flatMap(b => b.DataClasses) ?? []}
-                  onOptOutChange={handleOptOutChange}
-                />
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section id="brokers">
-            <div className="max-w-4xl mx-auto">
-              <DataBrokerList
-                breachDataClasses={[]}
-                onOptOutChange={handleOptOutChange}
-              />
-            </div>
-          </section>
+        {/* Tab bar */}
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex gap-1">
+            {TABS.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-5 py-3 text-sm font-semibold transition-colors border-b-2 ${
+                  activeTab === tab.id
+                    ? 'text-[#111827] border-[#111827]'
+                    : 'text-[#6B7280] border-transparent hover:text-[#111827]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+        {activeTab === 'breach' && (
+          <>
+            <HomePage onSearch={handleSearch} isLoading={isLoading} />
+            {(breachData || isLoading) && (
+              <BreachResults data={breachData} email={searchedEmail} isLoading={isLoading} />
+            )}
+          </>
         )}
 
-        <section id="estimator">
-          <div className="max-w-4xl mx-auto">
-            <DataValueEstimator onValueChange={setEstimatedValue} />
-          </div>
-        </section>
+        {activeTab === 'brokers' && (
+          <DataBrokerList
+            breachDataClasses={breachDataClasses}
+            onOptOutChange={handleOptOutChange}
+          />
+        )}
+
+        {activeTab === 'value' && (
+          <DataValueEstimator onValueChange={setEstimatedValue} />
+        )}
       </main>
 
       {showSummary && (

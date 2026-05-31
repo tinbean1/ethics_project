@@ -188,9 +188,9 @@ function CustomPieTooltip({ active, payload }) {
   if (active && payload && payload.length) {
     const item = payload[0];
     return (
-      <div className="bg-[#1A1A1A] border border-[#3D3D3D] rounded-lg px-3 py-2 text-sm max-w-xs">
-        <p className="text-white font-semibold">{item.name}</p>
-        <p className="text-red-400">${item.value.toFixed(2)}/year</p>
+      <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm max-w-xs shadow-sm">
+        <p className="text-gray-900 font-semibold">{item.name}</p>
+        <p className="text-red-600">${item.value.toFixed(2)}/year</p>
       </div>
     );
   }
@@ -200,9 +200,9 @@ function CustomPieTooltip({ active, payload }) {
 function CustomBarTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1A1A1A] border border-[#3D3D3D] rounded-lg px-3 py-2 text-sm">
-        <p className="text-white font-semibold">{label}</p>
-        <p className="text-red-400">${payload[0].value}B ad revenue (2023)</p>
+      <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm shadow-sm">
+        <p className="text-gray-900 font-semibold">{label}</p>
+        <p className="text-red-600">${payload[0].value}B ad revenue (2023)</p>
       </div>
     );
   }
@@ -236,9 +236,9 @@ function QuestionCard({ question, answers, onAnswer }) {
 
   return (
     <div className="card p-6">
-      <p className="font-semibold text-white mb-1">{question.label}</p>
-      {question.optional && <p className="text-xs text-[#718096] mb-3">Optional — skip if you prefer</p>}
-      {question.type === 'multi' && <p className="text-xs text-[#718096] mb-3">Select all that apply</p>}
+      <p className="font-semibold text-gray-900 mb-1">{question.label}</p>
+      {question.optional && <p className="text-xs text-gray-400 mb-3">Optional — skip if you prefer</p>}
+      {question.type === 'multi' && <p className="text-xs text-gray-400 mb-3">Select all that apply</p>}
       <div className="flex flex-wrap gap-2 mt-3">
         {question.options.map(opt => (
           <button
@@ -247,8 +247,8 @@ function QuestionCard({ question, answers, onAnswer }) {
             onClick={() => handleClick(opt)}
             className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
               isSelected(opt)
-                ? 'bg-red-600 border-red-500 text-white shadow-lg shadow-red-900/30'
-                : 'bg-[#0F0F0F] border-[#3D3D3D] text-[#A0AEC0] hover:border-[#718096] hover:text-white'
+                ? 'bg-gray-900 border-gray-900 text-white shadow-sm'
+                : 'bg-white border-gray-300 text-gray-600 hover:border-gray-500 hover:text-gray-900'
             }`}
           >
             {opt}
@@ -296,7 +296,7 @@ export default function DataValueEstimator({ onValueChange }) {
       <h2 className="section-heading">What Is Your Data Worth?</h2>
 
       <div className="source-disclaimer mb-6">
-        <strong className="text-white">These are estimates</strong> based on publicly available data from
+        <strong className="text-gray-900">These are estimates</strong> based on publicly available data from
         Meta, Alphabet, and TikTok quarterly earnings reports, and academic research.
         Platforms sell access to your attention and behavioral profile — not your data directly.
         Your actual value to advertisers may vary. All figures are annualized estimates in USD.
@@ -304,14 +304,14 @@ export default function DataValueEstimator({ onValueChange }) {
 
       {/* Progress bar */}
       {!answeredRequired && (
-        <div className="bg-[#0F0F0F] border border-[#2D2D2D] rounded-xl p-4 mb-6">
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-[#A0AEC0]">Questions answered</p>
-            <p className="text-sm font-semibold text-white">{answeredCount}/{requiredQuestions.length}</p>
+            <p className="text-sm text-gray-600">Questions answered</p>
+            <p className="text-sm font-semibold text-gray-900">{answeredCount}/{requiredQuestions.length}</p>
           </div>
-          <div className="w-full bg-[#2D2D2D] rounded-full h-1.5">
+          <div className="w-full bg-gray-200 rounded-full h-1.5">
             <div
-              className="bg-red-500 h-1.5 rounded-full transition-all duration-500"
+              className="bg-gray-900 h-1.5 rounded-full transition-all duration-500"
               style={{ width: `${(answeredCount / requiredQuestions.length) * 100}%` }}
             ></div>
           </div>
@@ -327,11 +327,11 @@ export default function DataValueEstimator({ onValueChange }) {
       {showResults && (
         <div className="space-y-8">
           {/* Animated total */}
-          <div className="bg-[#0F0F0F] border border-[#2D2D2D] rounded-xl p-8 text-center">
-            <p className="text-[#A0AEC0] text-sm mb-2">
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center">
+            <p className="text-gray-500 text-sm mb-2">
               Estimated annual value of your data to advertisers
             </p>
-            <p className="text-6xl font-black text-white mb-1">
+            <p className="text-6xl font-black text-gray-900 mb-1">
               $<CountUp
                 start={prevTotal}
                 end={total}
@@ -340,62 +340,62 @@ export default function DataValueEstimator({ onValueChange }) {
                 separator=","
               />
             </p>
-            <p className="text-[#718096] text-xs">per year — estimated from published platform earnings reports</p>
+            <p className="text-gray-400 text-xs">per year — estimated from published platform earnings reports</p>
           </div>
 
           {/* 4-column comparison grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-[#0F0F0F] border border-[#2D2D2D] rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-white">{netflixMonths}</p>
-              <p className="text-xs text-[#A0AEC0] mt-1">months of Netflix</p>
-              <p className="text-xs text-[#718096]">($15.49/mo)</p>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-gray-900">{netflixMonths}</p>
+              <p className="text-xs text-gray-600 mt-1">months of Netflix</p>
+              <p className="text-xs text-gray-400">($15.49/mo)</p>
             </div>
-            <div className="bg-[#0F0F0F] border border-[#2D2D2D] rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-white">{lattesCount}</p>
-              <p className="text-xs text-[#A0AEC0] mt-1">Starbucks lattes</p>
-              <p className="text-xs text-[#718096]">($6.50 each)</p>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-gray-900">{lattesCount}</p>
+              <p className="text-xs text-gray-600 mt-1">Starbucks lattes</p>
+              <p className="text-xs text-gray-400">($6.50 each)</p>
             </div>
-            <div className="bg-[#0F0F0F] border border-[#2D2D2D] rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-white">{fedMinHours}</p>
-              <p className="text-xs text-[#A0AEC0] mt-1">federal min wage hours</p>
-              <p className="text-xs text-[#718096]">($7.25/hr)</p>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-gray-900">{fedMinHours}</p>
+              <p className="text-xs text-gray-600 mt-1">federal min wage hours</p>
+              <p className="text-xs text-gray-400">($7.25/hr)</p>
             </div>
-            <div className="bg-[#0F0F0F] border border-[#2D2D2D] rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-white">{livingWageHours}</p>
-              <p className="text-xs text-[#A0AEC0] mt-1">living wage hours</p>
-              <p className="text-xs text-[#718096]">($17.00/hr)</p>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-gray-900">{livingWageHours}</p>
+              <p className="text-xs text-gray-600 mt-1">living wage hours</p>
+              <p className="text-xs text-gray-400">($17.00/hr)</p>
             </div>
           </div>
 
           {/* How we calculated this — itemized breakdown */}
           <div>
-            <h3 className="font-semibold text-white mb-3">How we calculated this</h3>
+            <h3 className="font-semibold text-gray-900 mb-3">How we calculated this</h3>
             <div className="space-y-2">
               {factors.map((item, i) => (
-                <div key={item.name} className="px-4 py-3 bg-[#0F0F0F] border border-[#2D2D2D] rounded-lg">
+                <div key={item.name} className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
                   <div className="flex items-center gap-3 mb-1">
                     <span
                       className="w-3 h-3 rounded-full flex-shrink-0"
                       style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }}
                     ></span>
-                    <span className="flex-1 text-sm text-white font-medium">{item.name}</span>
-                    <span className="font-mono text-sm text-white font-semibold">+${item.value.toFixed(2)}/yr</span>
+                    <span className="flex-1 text-sm text-gray-900 font-medium">{item.name}</span>
+                    <span className="font-mono text-sm text-gray-900 font-semibold">+${item.value.toFixed(2)}/yr</span>
                   </div>
-                  <p className="text-xs text-[#718096] ml-6 leading-relaxed">{item.note}</p>
+                  <p className="text-xs text-gray-500 ml-6 leading-relaxed">{item.note}</p>
                 </div>
               ))}
-              <div className="flex items-center gap-3 px-4 py-3 bg-red-950 border border-red-800 rounded-lg mt-2">
-                <span className="w-3 h-3 rounded-full bg-red-400 flex-shrink-0"></span>
-                <span className="flex-1 text-sm font-bold text-white">Total (estimated)</span>
-                <span className="font-mono text-lg text-red-400 font-black">${total.toFixed(2)}/yr</span>
+              <div className="flex items-center gap-3 px-4 py-3 bg-red-50 border border-red-200 rounded-lg mt-2">
+                <span className="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></span>
+                <span className="flex-1 text-sm font-bold text-gray-900">Total (estimated)</span>
+                <span className="font-mono text-lg text-red-600 font-black">${total.toFixed(2)}/yr</span>
               </div>
             </div>
           </div>
 
           {/* Pie chart */}
           <div>
-            <h3 className="font-semibold text-white mb-1">Where your value comes from</h3>
-            <p className="text-xs text-[#718096] mb-4">
+            <h3 className="font-semibold text-gray-900 mb-1">Where your value comes from</h3>
+            <p className="text-xs text-gray-400 mb-4">
               Estimated — based on platform ARPU figures from public earnings disclosures
             </p>
             <div className="h-72">
@@ -425,27 +425,27 @@ export default function DataValueEstimator({ onValueChange }) {
 
           {/* Industry bar chart */}
           <div>
-            <h3 className="font-semibold text-white mb-1">Where this money actually goes</h3>
-            <p className="text-xs text-[#718096] mb-4">
+            <h3 className="font-semibold text-gray-900 mb-1">Where this money actually goes</h3>
+            <p className="text-xs text-gray-400 mb-4">
               Total platform advertising revenue, 2023 (billions USD) — from public earnings reports
             </p>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={PLATFORM_REVENUE_DATA} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#2D2D2D" />
-                  <XAxis dataKey="name" tick={{ fill: '#A0AEC0', fontSize: 12 }} />
-                  <YAxis tick={{ fill: '#A0AEC0', fontSize: 12 }} tickFormatter={v => `$${v}B`} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="name" tick={{ fill: '#6B7280', fontSize: 12 }} />
+                  <YAxis tick={{ fill: '#6B7280', fontSize: 12 }} tickFormatter={v => `$${v}B`} />
                   <Tooltip content={<CustomBarTooltip />} />
                   <Bar dataKey="revenue" radius={[4, 4, 0, 0]} fill="#E53E3E" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
-            <div className="mt-4 bg-[#0F0F0F] border border-[#3D3D3D] rounded-xl p-5 text-center">
-              <p className="text-white font-semibold text-lg leading-snug">
+            <div className="mt-4 bg-gray-50 border border-gray-200 rounded-xl p-5 text-center">
+              <p className="text-gray-900 font-semibold text-lg leading-snug">
                 You will never receive this money.
               </p>
-              <p className="text-[#A0AEC0] text-sm mt-1">
+              <p className="text-gray-500 text-sm mt-1">
                 This is the business model.
               </p>
             </div>
@@ -454,7 +454,7 @@ export default function DataValueEstimator({ onValueChange }) {
       )}
 
       {!showResults && (
-        <div className="text-center py-8 text-[#718096]">
+        <div className="text-center py-8 text-gray-400">
           <p className="text-sm">Answer the questions above to see your estimated data value.</p>
           <p className="text-xs mt-1">All non-optional questions must be answered.</p>
         </div>

@@ -16,9 +16,9 @@ export default function HomePage({ onSearch, isLoading }) {
   return (
     <div className="card p-8">
       <h2 className="section-heading">Email Breach Checker</h2>
-      <p className="text-[#A0AEC0] text-sm mb-6 leading-relaxed">
+      <p className="text-gray-500 text-sm mb-6 leading-relaxed">
         Check if your email has appeared in known data breaches. Powered by{' '}
-        <a href="https://haveibeenpwned.com" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+        <a href="https://haveibeenpwned.com" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">
           HaveIBeenPwned
         </a>
         {' '}— a free, trusted service built by security researcher Troy Hunt.
@@ -34,16 +34,16 @@ export default function HomePage({ onSearch, isLoading }) {
             onChange={(e) => { setEmail(e.target.value); if (inputError) setInputError(''); }}
             placeholder="you@example.com"
             disabled={isLoading}
-            className="w-full bg-[#0F0F0F] border border-[#3D3D3D] rounded-lg px-4 py-3 text-white placeholder-[#718096] focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors disabled:opacity-50 text-base"
+            className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-colors disabled:opacity-50 text-base"
             autoComplete="email"
             spellCheck={false}
           />
-          {inputError && <p className="mt-1.5 text-xs text-red-400">{inputError}</p>}
+          {inputError && <p className="mt-1.5 text-xs text-red-600">{inputError}</p>}
         </div>
         <button
           type="submit"
           disabled={isLoading}
-          className="sm:w-44 bg-red-600 hover:bg-red-700 disabled:bg-red-900 disabled:cursor-not-allowed text-white font-semibold rounded-lg px-6 py-3 transition-colors text-base flex items-center justify-center gap-2"
+          className="sm:w-44 bg-gray-900 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg px-6 py-3 transition-colors text-base flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>
@@ -57,7 +57,7 @@ export default function HomePage({ onSearch, isLoading }) {
         </button>
       </form>
 
-      <p className="mt-4 text-xs text-[#718096]">
+      <p className="mt-4 text-xs text-gray-400">
         Your email is never stored. It is sent directly to HIBP's API and discarded immediately.
       </p>
     </div>

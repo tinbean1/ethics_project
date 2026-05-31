@@ -21,7 +21,7 @@ export default function SummaryBanner({
     let y = margin;
 
     // Helper to add text and track Y position
-    const addLine = (text, size = 11, style = 'normal', color = [255, 255, 255]) => {
+    const addLine = (text, size = 11, style = 'normal', color = [17, 24, 39]) => {
       doc.setFontSize(size);
       doc.setFont('helvetica', style);
       doc.setTextColor(...color);
@@ -31,28 +31,28 @@ export default function SummaryBanner({
     };
 
     const addSpacer = (h = 5) => { y += h; };
-    const addHRule = (color = [60, 60, 60]) => {
+    const addHRule = (color = [229, 231, 235]) => {
       doc.setDrawColor(...color);
       doc.line(margin, y, pageW - margin, y);
       y += 5;
     };
 
-    // Dark background
-    doc.setFillColor(15, 15, 15);
+    // Light background
+    doc.setFillColor(247, 248, 250);
     doc.rect(0, 0, pageW, doc.internal.pageSize.getHeight(), 'F');
 
     // Header block
-    doc.setFillColor(30, 30, 30);
+    doc.setFillColor(255, 255, 255);
     doc.rect(0, 0, pageW, 45, 'F');
 
     doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(229, 62, 62); // red
+    doc.setTextColor(220, 38, 38); // red-600
     doc.text('DataTrace', margin, 22);
 
     doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(160, 174, 192);
+    doc.setTextColor(107, 114, 128);
     doc.text('Personal Data Exposure Report', margin, 32);
     doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, margin, 39);
 
@@ -60,32 +60,32 @@ export default function SummaryBanner({
 
     // Mock mode warning
     if (isMockMode) {
-      doc.setFillColor(60, 50, 10);
+      doc.setFillColor(254, 252, 232);
       doc.rect(margin, y - 3, contentW, 12, 'F');
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(252, 211, 77);
+      doc.setTextColor(133, 77, 14);
       doc.text('⚠  DEMO MODE — breach data shown is sample data, not results for a specific email.', margin + 2, y + 5);
       y += 16;
     }
 
     // Summary stats section
-    addLine('SUMMARY', 13, 'bold', [229, 62, 62]);
-    addHRule([229, 62, 62]);
+    addLine('SUMMARY', 13, 'bold', [220, 38, 38]);
+    addHRule([220, 38, 38]);
 
-    addLine(`Email checked: ${isMockMode ? 'Demo mode (no email checked)' : email}`, 11, 'normal', [255, 255, 255]);
+    addLine(`Email checked: ${isMockMode ? 'Demo mode (no email checked)' : email}`, 11, 'normal', [17, 24, 39]);
     addSpacer(2);
-    addLine(`Breaches found: ${breachCount}`, 11, 'bold', breachCount > 0 ? [229, 62, 62] : [104, 211, 145]);
-    addLine(`Data brokers in industry: 40 (documented by EFF and FTC)`, 11, 'normal', [160, 174, 192]);
-    addLine(`Brokers opted out of: ${optedOutCount} / 40`, 11, 'normal', [160, 174, 192]);
-    addLine(`Estimated annual data value: $${estimatedValue.toFixed(2)} (see disclaimer below)`, 11, 'bold', [246, 173, 85]);
+    addLine(`Breaches found: ${breachCount}`, 11, 'bold', breachCount > 0 ? [220, 38, 38] : [22, 163, 74]);
+    addLine(`Data brokers in industry: 40 (documented by EFF and FTC)`, 11, 'normal', [107, 114, 128]);
+    addLine(`Brokers opted out of: ${optedOutCount} / 40`, 11, 'normal', [107, 114, 128]);
+    addLine(`Estimated annual data value: $${estimatedValue.toFixed(2)} (see disclaimer below)`, 11, 'bold', [17, 24, 39]);
 
     addSpacer(8);
 
     // Breach list
     if (breachList.length > 0) {
-      addLine('BREACH DETAILS', 13, 'bold', [229, 62, 62]);
-      addHRule([229, 62, 62]);
+      addLine('BREACH DETAILS', 13, 'bold', [220, 38, 38]);
+      addHRule([220, 38, 38]);
 
       breachList.forEach((breach, i) => {
         const dataClasses = (breach.DataClasses || []).join(', ');
@@ -93,72 +93,72 @@ export default function SummaryBanner({
           ['Passwords', 'Financial data'].includes(d)
         );
 
-        addLine(`${i + 1}. ${breach.Name}`, 11, 'bold', hasHighRisk ? [229, 62, 62] : [255, 255, 255]);
-        addLine(`   Date: ${breach.BreachDate}`, 9, 'normal', [160, 174, 192]);
-        addLine(`   Exposed: ${dataClasses || 'Unknown'}`, 9, 'normal', [160, 174, 192]);
+        addLine(`${i + 1}. ${breach.Name}`, 11, 'bold', hasHighRisk ? [220, 38, 38] : [17, 24, 39]);
+        addLine(`   Date: ${breach.BreachDate}`, 9, 'normal', [107, 114, 128]);
+        addLine(`   Exposed: ${dataClasses || 'Unknown'}`, 9, 'normal', [107, 114, 128]);
         addSpacer(3);
 
         // Page break if needed
         if (y > 250) {
           doc.addPage();
-          doc.setFillColor(15, 15, 15);
+          doc.setFillColor(247, 248, 250);
           doc.rect(0, 0, pageW, doc.internal.pageSize.getHeight(), 'F');
           y = margin;
         }
       });
     } else {
-      addLine('No breaches found for this email.', 11, 'normal', [104, 211, 145]);
+      addLine('No breaches found for this email.', 11, 'normal', [22, 163, 74]);
       addSpacer(8);
     }
 
     // Disclaimer
     addSpacer(5);
-    addLine('ESTIMATE DISCLAIMER', 11, 'bold', [246, 173, 85]);
-    addHRule([60, 50, 10]);
+    addLine('ESTIMATE DISCLAIMER', 11, 'bold', [17, 24, 39]);
+    addHRule([229, 231, 235]);
     addLine(
       'The "estimated annual data value" figure is based on publicly available platform ARPU data from Meta Q4 2023, Alphabet Q4 2023, Snap Q4 2023, Microsoft FY2023 earnings reports, Bloomberg Intelligence (2023), and the Financial Times (2023). These are estimates only — actual values vary by individual.',
-      9, 'normal', [160, 174, 192]
+      9, 'normal', [107, 114, 128]
     );
 
     addSpacer(10);
 
     // Footer
-    addHRule([45, 45, 45]);
+    addHRule([229, 231, 235]);
     addLine(
       'Generated by DataTrace  |  Data sources: HaveIBeenPwned, Meta, Alphabet, ByteDance earnings reports, EFF, FTC, Vanderbilt University',
-      8, 'normal', [113, 128, 150]
+      8, 'normal', [156, 163, 175]
     );
-    addLine('datatrace.demo  |  Not legal or financial advice. For educational purposes.', 8, 'normal', [113, 128, 150]);
+    addLine('datatrace.demo  |  Not legal or financial advice. For educational purposes.', 8, 'normal', [156, 163, 175]);
 
     doc.save('datatrace-report.pdf');
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#0F0F0F]/95 backdrop-blur-sm border-t border-[#2D2D2D]">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-lg">
       <div className="max-w-4xl mx-auto px-4 py-3 flex flex-wrap items-center gap-4">
         {/* Stats */}
         <div className="flex flex-wrap items-center gap-4 flex-1">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0"></span>
-            <span className="text-sm text-[#A0AEC0]">
-              <span className="text-white font-bold">{breachCount}</span> breach{breachCount !== 1 ? 'es' : ''}
+            <span className="text-sm text-gray-600">
+              <span className="text-gray-900 font-bold">{breachCount}</span> breach{breachCount !== 1 ? 'es' : ''}
               {isMockMode && <span className="text-yellow-600 text-xs ml-1">(demo)</span>}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0"></span>
-            <span className="text-sm text-[#A0AEC0]">
-              <span className="text-white font-bold">40</span> known data brokers
+            <span className="text-sm text-gray-600">
+              <span className="text-gray-900 font-bold">40</span> known data brokers
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-yellow-500 rounded-full flex-shrink-0"></span>
-            <span className="text-sm text-[#A0AEC0]">
+            <span className="text-sm text-gray-600">
               Est. data value:{' '}
-              <span className="text-yellow-400 font-bold">${estimatedValue.toFixed(2)}/yr</span>
-              <span className="text-xs text-[#718096] ml-1">(est.)</span>
+              <span className="text-gray-900 font-bold">${estimatedValue.toFixed(2)}/yr</span>
+              <span className="text-xs text-gray-400 ml-1">(est.)</span>
             </span>
           </div>
         </div>
