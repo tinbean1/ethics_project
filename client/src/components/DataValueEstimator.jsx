@@ -5,13 +5,26 @@ import {
 } from 'recharts';
 import CountUp from 'react-countup';
 
-const QUESTIONS = [
+// Step definitions — each step has an id, label, and question ids
+const STEPS = [
   {
-    id: 'age',
-    label: 'Your age range',
-    type: 'single',
-    options: ['18–24', '25–34', '35–44', '45–54', '55+']
+    id: 1,
+    label: 'Your Online Life',
+    questionIds: ['platforms', 'google', 'streaming'],
   },
+  {
+    id: 2,
+    label: 'Your Habits',
+    questionIds: ['shopping', 'healthApps', 'smartHome'],
+  },
+  {
+    id: 3,
+    label: 'Your Profile',
+    questionIds: ['age', 'location', 'income'],
+  },
+];
+
+const QUESTIONS = [
   {
     id: 'platforms',
     label: 'Social platforms you actively use',
@@ -25,16 +38,16 @@ const QUESTIONS = [
     options: ['Yes, most of them', 'Some', 'No']
   },
   {
-    id: 'shopping',
-    label: 'How often do you shop online?',
-    type: 'single',
-    options: ['Rarely', 'Sometimes', 'Frequently']
-  },
-  {
     id: 'streaming',
     label: 'Streaming services you subscribe to',
     type: 'multi',
     options: ['Netflix', 'Spotify', 'Hulu', 'Disney+', 'Apple TV+', 'YouTube Premium', 'None']
+  },
+  {
+    id: 'shopping',
+    label: 'How often do you shop online?',
+    type: 'single',
+    options: ['Rarely', 'Sometimes', 'Frequently']
   },
   {
     id: 'healthApps',
@@ -47,6 +60,12 @@ const QUESTIONS = [
     label: 'Do you have smart home devices? (Alexa, Google Home, smart TV, etc.)',
     type: 'single',
     options: ['Yes several', 'One or two', 'No']
+  },
+  {
+    id: 'age',
+    label: 'Your age range',
+    type: 'single',
+    options: ['18–24', '25–34', '35–44', '45–54', '55+']
   },
   {
     id: 'location',
@@ -259,72 +278,120 @@ function QuestionCard({ question, answers, onAnswer }) {
   );
 }
 
+function StepIndicator({ currentStep, completedSteps }) {
+  return (
+    <div className="flex items-center justify-center mb-8">
+      {STEPS.map((step, idx) => {
+        const isCompleted = completedSteps.has(step.id);
+        const isCurrent = currentStep === step.id;
+        const isFuture = !isCompleted && !isCurrent;
+
+        return (
+          <React.Fragment key={step.id}>
+            {/* Step circle + label */}
+            <div className="flex flex-col items-center gap-1.5">
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                  isCompleted
+                    ? 'bg-gray-900 text-white'
+                    : isCurrent
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white border-2 border-gray-300 text-gray-400'
+                }`}
+              >
+                {isCompleted ? (
+                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M3 8l3.5 3.5L13 4"/>
+                  </svg>
+                ) : (
+                  step.id
+                )}
+              </div>
+              <span className={`text-xs font-medium whitespace-nowrap ${
+                isCurrent ? 'text-gray-900' : isFuture ? 'text-gray-400' : 'text-gray-600'
+              }`}>
+                {step.label}
+              </span>
+            </div>
+
+            {/* Connector line */}
+            {idx < STEPS.length - 1 && (
+              <div className={`h-px w-12 sm:w-20 mx-2 mb-5 transition-colors ${
+                completedSteps.has(step.id) ? 'bg-gray-900' : 'bg-gray-200'
+              }`} />
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function DataValueEstimator({ onValueChange }) {
   const [answers, setAnswers] = useState({});
-  const [prevTotal, setPrevTotal] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState(new Set());
   const [showResults, setShowResults] = useState(false);
+  const [prevTotal, setPrevTotal] = useState(0);
 
   const handleAnswer = (questionId, value) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
   };
 
-  const requiredQuestions = QUESTIONS.filter(q => !q.optional);
-  const answeredCount = requiredQuestions.filter(q => {
+  const { total, factors } = computeValue(answers);
+
+  // Check if all required questions in the current step are answered
+  const currentStepDef = STEPS.find(s => s.id === currentStep);
+  const currentStepQuestions = QUESTIONS.filter(q => currentStepDef.questionIds.includes(q.id));
+  const currentStepRequired = currentStepQuestions.filter(q => !q.optional);
+  const currentStepAnswered = currentStepRequired.every(q => {
     const a = answers[q.id];
     if (q.type === 'multi') return Array.isArray(a) && a.length > 0;
     return a !== null && a !== undefined;
-  }).length;
-  const answeredRequired = answeredCount === requiredQuestions.length;
+  });
 
-  const { total, factors } = computeValue(answers);
+  // Running estimate — show if at least one answer has been given
+  const hasAnyAnswer = Object.keys(answers).some(k => {
+    const v = answers[k];
+    if (Array.isArray(v)) return v.length > 0;
+    return v !== null && v !== undefined;
+  });
 
-  useEffect(() => {
-    if (answeredRequired) {
-      setPrevTotal(prev => prev);
+  const handleNext = () => {
+    if (currentStep < 3) {
+      setCompletedSteps(prev => new Set([...prev, currentStep]));
+      setCurrentStep(s => s + 1);
+    } else {
+      // Final step — show results
+      setCompletedSteps(prev => new Set([...prev, currentStep]));
+      setPrevTotal(0);
       setShowResults(true);
       onValueChange(total);
     }
-  }, [answers, answeredRequired, total, onValueChange]);
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(s => s - 1);
+    }
+  };
 
   const netflixMonths = (total / NETFLIX_MONTHLY).toFixed(1);
   const lattesCount = Math.round(total / STARBUCKS_LATTE);
   const fedMinHours = (total / FEDERAL_MIN_WAGE).toFixed(1);
   const livingWageHours = (total / LIVING_WAGE).toFixed(1);
 
-  return (
-    <div className="card p-8">
-      <h2 className="section-heading">What Is Your Data Worth?</h2>
-
-      <div className="source-disclaimer mb-6">
-        <strong className="text-gray-900">These are estimates</strong> based on publicly available data from
-        Meta, Alphabet, and TikTok quarterly earnings reports, and academic research.
-        Platforms sell access to your attention and behavioral profile — not your data directly.
-        Your actual value to advertisers may vary. All figures are annualized estimates in USD.
-      </div>
-
-      {/* Progress bar */}
-      {!answeredRequired && (
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm text-gray-600">Questions answered</p>
-            <p className="text-sm font-semibold text-gray-900">{answeredCount}/{requiredQuestions.length}</p>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-1.5">
-            <div
-              className="bg-gray-900 h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${(answeredCount / requiredQuestions.length) * 100}%` }}
-            ></div>
-          </div>
+  if (showResults) {
+    return (
+      <div className="card p-8">
+        <h2 className="section-heading">What Is Your Data Worth?</h2>
+        <div className="source-disclaimer mb-6">
+          <strong className="text-gray-900">These are estimates</strong> based on publicly available data from
+          Meta, Alphabet, and TikTok quarterly earnings reports, and academic research.
+          Platforms sell access to your attention and behavioral profile — not your data directly.
+          Your actual value to advertisers may vary. All figures are annualized estimates in USD.
         </div>
-      )}
 
-      <div className="space-y-4 mb-8">
-        {QUESTIONS.map(q => (
-          <QuestionCard key={q.id} question={q} answers={answers} onAnswer={handleAnswer} />
-        ))}
-      </div>
-
-      {showResults && (
         <div className="space-y-8">
           {/* Animated total */}
           <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center">
@@ -451,12 +518,71 @@ export default function DataValueEstimator({ onValueChange }) {
             </div>
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
 
-      {!showResults && (
-        <div className="text-center py-8 text-gray-400">
-          <p className="text-sm">Answer the questions above to see your estimated data value.</p>
-          <p className="text-xs mt-1">All non-optional questions must be answered.</p>
+  return (
+    <div className="card p-8 pb-24">
+      <h2 className="section-heading">What Is Your Data Worth?</h2>
+
+      <div className="source-disclaimer mb-6">
+        <strong className="text-gray-900">These are estimates</strong> based on publicly available data from
+        Meta, Alphabet, and TikTok quarterly earnings reports, and academic research.
+        Platforms sell access to your attention and behavioral profile — not your data directly.
+        Your actual value to advertisers may vary. All figures are annualized estimates in USD.
+      </div>
+
+      {/* Step progress indicator */}
+      <StepIndicator currentStep={currentStep} completedSteps={completedSteps} />
+
+      {/* Step heading */}
+      <div className="mb-6">
+        <h3 className="text-lg font-bold text-gray-900">
+          Step {currentStep}: {currentStepDef.label}
+        </h3>
+      </div>
+
+      {/* Questions for current step */}
+      <div className="space-y-4 mb-8">
+        {currentStepQuestions.map(q => (
+          <QuestionCard key={q.id} question={q} answers={answers} onAnswer={handleAnswer} />
+        ))}
+      </div>
+
+      {/* Navigation buttons */}
+      <div className="flex items-center justify-between gap-4">
+        {currentStep > 1 ? (
+          <button
+            onClick={handleBack}
+            className="px-5 py-2.5 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 hover:border-gray-500 hover:text-gray-900 transition-colors"
+          >
+            Back
+          </button>
+        ) : (
+          <div />
+        )}
+
+        <button
+          onClick={handleNext}
+          disabled={!currentStepAnswered}
+          className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+            currentStepAnswered
+              ? 'bg-gray-900 text-white hover:bg-gray-700 shadow-sm'
+              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          {currentStep < 3 ? 'Next' : 'See My Results'}
+        </button>
+      </div>
+
+      {/* Sticky running total bar */}
+      {hasAnyAnswer && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 py-3 px-4">
+          <p className="text-center text-sm text-gray-600">
+            Estimated so far:{' '}
+            <span className="font-bold text-gray-900">${total.toFixed(2)} / year</span>
+          </p>
         </div>
       )}
     </div>

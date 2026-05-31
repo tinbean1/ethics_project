@@ -19,9 +19,9 @@ function saveOptOuts(data) {
 
 function BrokerCard({ broker, isOptedOut, isAtRisk, onToggle }) {
   return (
-    <div className={`flex items-start gap-4 px-4 py-3 rounded-xl border transition-colors ${
+    <div className={`flex items-start gap-4 p-5 rounded-xl border transition-colors ${
       isOptedOut
-        ? 'bg-gray-50 border-gray-200 opacity-60'
+        ? 'bg-gray-50 border-gray-200'
         : isAtRisk
           ? 'bg-red-50 border-red-200 hover:border-red-300'
           : 'bg-white border-gray-200 hover:border-gray-300'
@@ -37,7 +37,7 @@ function BrokerCard({ broker, isOptedOut, isAtRisk, onToggle }) {
         <div className="flex flex-wrap items-center gap-2 mb-1">
           <label
             htmlFor={`optout-${broker.id}`}
-            className={`font-semibold text-sm cursor-pointer ${isOptedOut ? 'line-through text-gray-400' : 'text-gray-900'}`}
+            className={`font-semibold text-base cursor-pointer ${isOptedOut ? 'line-through text-gray-400' : 'text-gray-900'}`}
           >
             {broker.name}
           </label>
@@ -52,14 +52,14 @@ function BrokerCard({ broker, isOptedOut, isAtRisk, onToggle }) {
             </span>
           )}
         </div>
-        <p className="text-xs text-gray-500 leading-relaxed">{broker.description}</p>
+        <p className="text-sm text-gray-500 leading-relaxed">{broker.description}</p>
       </div>
       <a
         href={broker.optOut}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => { if (!isOptedOut) onToggle(broker.id); }}
-        className="text-xs text-red-600 hover:underline font-medium whitespace-nowrap transition-colors flex items-center gap-1 flex-shrink-0 mt-0.5"
+        className="text-sm text-red-600 hover:underline font-medium whitespace-nowrap transition-colors flex items-center gap-1 flex-shrink-0 mt-0.5"
         title={`Request removal from ${broker.name}`}
       >
         Request removal
@@ -84,7 +84,7 @@ function CategorySection({ category, brokers, optOuts, atRiskCategories, onToggl
     }`}>
       <button
         onClick={() => setIsOpen(o => !o)}
-        className={`w-full flex items-center justify-between px-5 py-4 text-left transition-colors ${
+        className={`w-full flex items-center justify-between px-6 py-5 text-left transition-colors ${
           isAtRisk ? 'bg-red-50 hover:bg-red-100' : 'bg-gray-50 hover:bg-gray-100'
         }`}
       >
@@ -110,8 +110,8 @@ function CategorySection({ category, brokers, optOuts, atRiskCategories, onToggl
       </button>
 
       {isOpen && (
-        <div className="px-5 py-4 bg-white border-t border-gray-200">
-          <p className="text-sm text-gray-600 leading-relaxed mb-3">{info.description}</p>
+        <div className="px-6 pb-6 bg-white border-t border-gray-200">
+          <p className="text-sm text-gray-600 leading-relaxed pt-5 mb-3">{info.description}</p>
           <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 mb-4">
             <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">How they get your data</p>
             <p className="text-xs text-gray-600 leading-relaxed">{info.howTheyGetData}</p>
@@ -158,9 +158,9 @@ export default function DataBrokerList({ breachDataClasses, onOptOutChange }) {
 
   return (
     <div className="card p-8">
-      <h2 className="section-heading">Known Data Brokers</h2>
+      <h2 className="section-heading mb-8">Known Data Brokers</h2>
 
-      <div className="source-disclaimer mb-6">
+      <div className="source-disclaimer mb-8">
         <strong className="text-gray-900">About this list:</strong> The following data brokers are
         real companies documented by the{' '}
         <a href="https://www.eff.org/issues/privacy" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">
@@ -176,7 +176,7 @@ export default function DataBrokerList({ breachDataClasses, onOptOutChange }) {
       </div>
 
       {/* Progress tracker */}
-      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
+      <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
         <div className="flex items-center justify-between mb-2">
           <p className="text-sm font-semibold text-gray-900">Removal Requests</p>
           <p className="text-sm text-gray-600">
@@ -214,7 +214,7 @@ export default function DataBrokerList({ breachDataClasses, onOptOutChange }) {
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {CATEGORY_ORDER.map(category => (
           <CategorySection
             key={category}

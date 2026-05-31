@@ -231,7 +231,7 @@ const PLATFORMS = [
   },
 ];
 
-const PRACTICE_COLUMNS = [
+const PRACTICE_ROWS = [
   { key: 'sellsData', label: 'Sells Data', badForUser: true },
   { key: 'sharesWithPartners', label: 'Shares w/ Partners', badForUser: true },
   { key: 'usedForAds', label: 'Used for Ads', badForUser: true },
@@ -247,80 +247,122 @@ const RATING_CONFIG = {
   Transparent: { bg: 'bg-green-50', text: 'text-green-600', border: 'border-green-200' },
 };
 
-function PracticePill({ value, badForUser }) {
-  if (typeof value === 'string') {
-    return (
-      <span className="inline-block text-xs bg-gray-100 text-gray-700 rounded px-2 py-0.5">
-        {value}
-      </span>
-    );
-  }
+function BoolPill({ value, badForUser }) {
   const isGood = badForUser ? !value : value;
   return (
     <span
-      className={`inline-block text-xs rounded px-2 py-0.5 font-medium ${
-        isGood ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+      className={`inline-flex items-center gap-1 text-xs rounded-full px-2.5 py-0.5 font-medium ${
+        isGood ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'
       }`}
     >
+      {isGood ? (
+        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M2 6l3 3 5-5"/>
+        </svg>
+      ) : (
+        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 3l6 6M9 3l-6 6"/>
+        </svg>
+      )}
       {value ? 'Yes' : 'No'}
     </span>
   );
 }
 
-function TableCell({ value, badForUser }) {
-  if (typeof value === 'string') {
-    return <span className="text-xs text-gray-600">{value}</span>;
-  }
-  const isGood = badForUser ? !value : value;
+function PlatformDetail({ platform }) {
+  const rc = RATING_CONFIG[platform.rating];
   return (
-    <span className={`text-base font-bold ${isGood ? 'text-green-600' : 'text-red-600'}`}>
-      {isGood ? '✓' : '✗'}
-    </span>
+    <div className="space-y-6">
+      {/* Header row */}
+      <div className="flex items-center gap-4">
+        <img
+          src={platform.logo}
+          alt={platform.name}
+          className="w-16 h-16 rounded-xl object-contain border border-gray-100 bg-white p-1 flex-shrink-0"
+          onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+        />
+        <div
+          style={{ display: 'none' }}
+          className="w-16 h-16 rounded-xl bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-2xl flex-shrink-0"
+        >
+          {platform.name[0]}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-2xl font-bold text-gray-900 leading-tight">{platform.name}</h3>
+          <span className={`inline-block mt-1 text-xs font-semibold px-2.5 py-1 rounded-full border ${rc.bg} ${rc.text} ${rc.border}`}>
+            {platform.rating}
+          </span>
+        </div>
+      </div>
+
+      {/* Summary */}
+      <p className="text-gray-600 leading-relaxed">{platform.summary}</p>
+
+      {/* Practice rows */}
+      <div>
+        <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">
+          What they claim the right to do
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-6">
+          {PRACTICE_ROWS.map(row => {
+            const val = platform.practices[row.key];
+            return (
+              <div key={row.key} className="flex items-center justify-between py-1.5 border-b border-gray-100">
+                <span className="text-sm text-gray-600">{row.label}</span>
+                {typeof val === 'string' ? (
+                  <span className="text-sm text-gray-700 text-right max-w-[55%] leading-snug">{val}</span>
+                ) : (
+                  <BoolPill value={val} badForUser={row.badForUser} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Notable clause */}
+      <div>
+        <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-2">
+          Notable clause
+        </h4>
+        <blockquote className="bg-gray-50 border-l-4 border-gray-300 rounded-r-lg px-4 py-3">
+          <p className="text-sm text-gray-600 italic leading-relaxed">
+            "{platform.practices.notableClause}"
+          </p>
+        </blockquote>
+      </div>
+
+      {/* Rating legend at bottom */}
+      <div className="pt-2 border-t border-gray-100">
+        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-2">Rating scale</p>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(RATING_CONFIG).map(([rating, rc]) => (
+            <span
+              key={rating}
+              className={`text-xs font-medium px-2.5 py-1 rounded-full border ${rc.bg} ${rc.text} ${rc.border}`}
+            >
+              {rating === 'Aggressive' && '● Aggressive'}
+              {rating === 'Moderate' && '● Moderate'}
+              {rating === 'Transparent' && '● Transparent'}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
-function PlatformCard({ platform }) {
-  const rc = RATING_CONFIG[platform.rating];
+function LogoFallback({ name }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col gap-3 shadow-sm">
-      <img
-        src={platform.logo}
-        alt={platform.name}
-        className="w-10 h-10 rounded-lg object-contain"
-        onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
-      />
-      <div style={{display:'none'}} className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg">
-        {platform.name[0]}
-      </div>
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="font-bold text-gray-900 text-base leading-tight">{platform.name}</h3>
-        <span
-          className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full border ${rc.bg} ${rc.text} ${rc.border}`}
-        >
-          {platform.rating}
-        </span>
-      </div>
-
-      <p className="text-sm text-gray-600 leading-relaxed">{platform.summary}</p>
-
-      <div className="flex flex-wrap gap-1.5">
-        {PRACTICE_COLUMNS.map(col => (
-          <div key={col.key} className="flex items-center gap-1">
-            <span className="text-xs text-gray-500">{col.label}:</span>
-            <PracticePill value={platform.practices[col.key]} badForUser={col.badForUser} />
-          </div>
-        ))}
-      </div>
-
-      <p className="text-xs text-gray-500 italic border-t border-gray-100 pt-3 leading-relaxed">
-        "{platform.practices.notableClause}"
-      </p>
+    <div className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg flex-shrink-0">
+      {name[0]}
     </div>
   );
 }
 
 export default function TermsComparison() {
-  const [view, setView] = useState('cards');
+  const [selected, setSelected] = useState('Google');
+  const selectedPlatform = PLATFORMS.find(p => p.name === selected) || PLATFORMS[0];
 
   return (
     <div className="space-y-6">
@@ -337,106 +379,93 @@ export default function TermsComparison() {
         </p>
       </div>
 
-      {/* Rating legend */}
-      <div className="flex flex-wrap gap-2">
-        {Object.entries(RATING_CONFIG).map(([rating, rc]) => (
-          <span
-            key={rating}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${rc.bg} ${rc.text} ${rc.border}`}
-          >
-            {rating === 'Aggressive' && '● Aggressive — extensive data collection and sharing'}
-            {rating === 'Moderate' && '● Moderate — some data sharing, limited controls'}
-            {rating === 'Transparent' && '● Transparent — strong user controls and privacy defaults'}
-          </span>
-        ))}
+      {/* Two-panel explorer */}
+      <div className="flex gap-8 items-start">
+        {/* Left panel — desktop sticky tile grid */}
+        <div className="hidden lg:block w-64 flex-shrink-0 sticky top-6">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+            Pick a platform to explore
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {PLATFORMS.map(p => {
+              const isSelected = p.name === selected;
+              return (
+                <button
+                  key={p.name}
+                  onClick={() => setSelected(p.name)}
+                  className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border text-center transition-all ${
+                    isSelected
+                      ? 'border-gray-900 bg-gray-50 ring-1 ring-gray-900'
+                      : 'bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                  }`}
+                >
+                  <img
+                    src={p.logo}
+                    alt={p.name}
+                    className="w-10 h-10 rounded-lg object-contain"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div
+                    style={{ display: 'none' }}
+                    className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg"
+                  >
+                    {p.name[0]}
+                  </div>
+                  <span className="text-xs text-gray-700 leading-tight line-clamp-2">{p.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Mobile selector — horizontal scrollable pills */}
+        <div className="lg:hidden w-full">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            Pick a platform
+          </p>
+          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+            {PLATFORMS.map(p => {
+              const isSelected = p.name === selected;
+              return (
+                <button
+                  key={p.name}
+                  onClick={() => setSelected(p.name)}
+                  className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-full border text-sm font-medium transition-all ${
+                    isSelected
+                      ? 'border-gray-900 bg-gray-900 text-white'
+                      : 'bg-white border-gray-200 text-gray-700 hover:border-gray-400'
+                  }`}
+                >
+                  <img
+                    src={p.logo}
+                    alt=""
+                    className="w-5 h-5 rounded object-contain"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                  {p.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right panel — detail */}
+        <div className="flex-1 min-w-0 lg:block hidden">
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <PlatformDetail platform={selectedPlatform} />
+          </div>
+        </div>
       </div>
 
-      {/* View toggle */}
-      <div className="flex gap-1 bg-gray-100 rounded-full p-1 w-fit">
-        {['cards', 'table'].map(v => (
-          <button
-            key={v}
-            onClick={() => setView(v)}
-            className={`px-5 py-1.5 text-sm font-semibold rounded-full transition-colors ${
-              view === v ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            {v === 'cards' ? 'Cards' : 'Table'}
-          </button>
-        ))}
+      {/* Mobile detail panel below selector */}
+      <div className="lg:hidden">
+        <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+          <PlatformDetail platform={selectedPlatform} />
+        </div>
       </div>
-
-      {/* Card grid */}
-      {view === 'cards' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {PLATFORMS.map(p => (
-            <PlatformCard key={p.name} platform={p} />
-          ))}
-        </div>
-      )}
-
-      {/* Comparison table */}
-      {view === 'table' && (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
-          <table className="min-w-full text-sm bg-white">
-            <thead>
-              <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="sticky left-0 bg-gray-50 z-10 text-left px-4 py-3 font-semibold text-gray-900 border-r border-gray-200 min-w-[140px]">
-                  Platform
-                </th>
-                {PRACTICE_COLUMNS.map(col => (
-                  <th
-                    key={col.key}
-                    className="px-4 py-3 font-semibold text-gray-700 whitespace-nowrap text-center min-w-[120px]"
-                  >
-                    {col.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {PLATFORMS.map((p, i) => {
-                const rc = RATING_CONFIG[p.rating];
-                return (
-                  <tr
-                    key={p.name}
-                    className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
-                  >
-                    <td className={`sticky left-0 z-10 px-4 py-3 border-r border-gray-200 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2">
-                          <img
-                            src={p.logo}
-                            alt={p.name}
-                            className="w-6 h-6 rounded object-contain shrink-0"
-                            onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
-                          />
-                          <div style={{display:'none'}} className="w-6 h-6 rounded bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xs shrink-0">
-                            {p.name[0]}
-                          </div>
-                          <span className="font-semibold text-gray-900 whitespace-nowrap">
-                            {p.name}
-                          </span>
-                        </div>
-                        <span
-                          className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit border ${rc.bg} ${rc.text} ${rc.border}`}
-                        >
-                          {p.rating}
-                        </span>
-                      </div>
-                    </td>
-                    {PRACTICE_COLUMNS.map(col => (
-                      <td key={col.key} className="px-4 py-3 text-center">
-                        <TableCell value={p.practices[col.key]} badForUser={col.badForUser} />
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
   );
 }
