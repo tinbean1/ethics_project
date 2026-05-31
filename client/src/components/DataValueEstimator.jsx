@@ -394,11 +394,11 @@ export default function DataValueEstimator({ onValueChange }) {
 
         <div className="space-y-8">
           {/* Animated total */}
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center">
-            <p className="text-gray-500 text-sm mb-2">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl p-8 text-center">
+            <p className="text-gray-300 text-sm mb-2">
               Estimated annual value of your data to advertisers
             </p>
-            <p className="text-6xl font-black text-gray-900 mb-1">
+            <p className="text-6xl font-black text-white mb-1">
               $<CountUp
                 start={prevTotal}
                 end={total}
@@ -424,25 +424,25 @@ export default function DataValueEstimator({ onValueChange }) {
 
           {/* 4-column comparison grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-gray-900">{netflixMonths}</p>
-              <p className="text-xs text-gray-600 mt-1">months of Netflix</p>
-              <p className="text-xs text-gray-400">($15.49/mo)</p>
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-red-700">{netflixMonths}</p>
+              <p className="text-xs text-red-600 mt-1 font-medium">months of Netflix</p>
+              <p className="text-xs text-red-400">($15.49/mo)</p>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-gray-900">{lattesCount}</p>
-              <p className="text-xs text-gray-600 mt-1">Starbucks lattes</p>
-              <p className="text-xs text-gray-400">($6.50 each)</p>
+            <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-orange-700">{lattesCount}</p>
+              <p className="text-xs text-orange-600 mt-1 font-medium">Starbucks lattes</p>
+              <p className="text-xs text-orange-400">($6.50 each)</p>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-gray-900">{fedMinHours}</p>
-              <p className="text-xs text-gray-600 mt-1">federal min wage hours</p>
-              <p className="text-xs text-gray-400">($7.25/hr)</p>
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-amber-700">{fedMinHours}</p>
+              <p className="text-xs text-amber-600 mt-1 font-medium">federal min wage hours</p>
+              <p className="text-xs text-amber-400">($7.25/hr)</p>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
-              <p className="text-2xl font-bold text-gray-900">{livingWageHours}</p>
-              <p className="text-xs text-gray-600 mt-1">living wage hours</p>
-              <p className="text-xs text-gray-400">($17.00/hr)</p>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-center">
+              <p className="text-2xl font-bold text-yellow-700">{livingWageHours}</p>
+              <p className="text-xs text-yellow-600 mt-1 font-medium">living wage hours</p>
+              <p className="text-xs text-yellow-400">($17.00/hr)</p>
             </div>
           </div>
 
@@ -475,20 +475,20 @@ export default function DataValueEstimator({ onValueChange }) {
           <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="font-semibold text-gray-900 mb-4">How You Compare to the Average American</h3>
             <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <p className="text-3xl font-black text-gray-900">${total.toFixed(0)}</p>
-                <p className="text-xs text-gray-600 mt-1 font-medium">You</p>
-                <p className="text-xs text-gray-400">estimated annual value</p>
+              <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-200">
+                <p className="text-3xl font-black text-blue-700">${total.toFixed(0)}</p>
+                <p className="text-xs text-blue-600 mt-1 font-medium">You</p>
+                <p className="text-xs text-blue-400">estimated annual value</p>
               </div>
               <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <p className="text-3xl font-black text-gray-900">$187</p>
+                <p className="text-3xl font-black text-gray-700">$187</p>
                 <p className="text-xs text-gray-600 mt-1 font-medium">US Average</p>
                 <p className="text-xs text-gray-400">per year</p>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <p className="text-3xl font-black text-gray-900">$320</p>
-                <p className="text-xs text-gray-600 mt-1 font-medium">Heavy social user</p>
-                <p className="text-xs text-gray-400">4+ major platforms</p>
+              <div className="text-center p-4 bg-purple-50 rounded-xl border border-purple-200">
+                <p className="text-3xl font-black text-purple-700">$320</p>
+                <p className="text-xs text-purple-600 mt-1 font-medium">Heavy social user</p>
+                <p className="text-xs text-purple-400">4+ major platforms</p>
               </div>
             </div>
             <p className="text-xs text-gray-500 leading-relaxed">
