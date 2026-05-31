@@ -1,68 +1,89 @@
-/**
- * Real data brokers documented by the Electronic Frontier Foundation (EFF)
- * and referenced in Federal Trade Commission (FTC) reports.
- * Opt-out URLs are the official self-service removal pages as of 2024.
- */
+export const CATEGORY_INFO = {
+  Identity: {
+    title: "Identity & People-Search Brokers",
+    description: "These companies compile searchable public profiles on private individuals. Anyone — your employer, a landlord, a stranger — can pay a few dollars to look up your address, phone number, relatives, criminal records, and more. You never consented to being listed.",
+    howTheyGetData: "Voter registration rolls, property records, court filings, phone directories, and social media scraping."
+  },
+  Financial: {
+    title: "Financial Data Brokers",
+    description: "Beyond the three credit bureaus you may know, a larger ecosystem of financial data brokers collects your debt history, income estimates, mortgage records, and insurance claims. This data is sold for marketing, risk scoring, and lending decisions.",
+    howTheyGetData: "Credit card transactions, mortgage and loan applications, insurance filings, bank partnerships, and public court records."
+  },
+  Behavioral: {
+    title: "Behavioral & Ad-Tech Brokers",
+    description: "The largest and least visible category. These companies track everything you do online — every article you read, every search you run, every ad you see — and build detailed profiles used to target you with advertising across every website you visit. They operate invisibly inside apps and websites you use every day.",
+    howTheyGetData: "Cookies embedded in websites, invisible tracking pixels, SDKs built into apps, and data purchased from other brokers."
+  },
+  Location: {
+    title: "Location Data Brokers",
+    description: "These companies collect precise GPS coordinates from smartphone apps. They can reconstruct your daily routine — your home, your workplace, medical appointments, places of worship. This data is sold without your knowledge to advertisers, law enforcement, and hedge funds.",
+    howTheyGetData: "Location permissions granted to weather, game, or navigation apps, which quietly sell your movement data in the background."
+  },
+  Purchase: {
+    title: "Purchase & Retail Data Brokers",
+    description: "These companies track what you buy — online and in physical stores — and use that data to infer your income, health status, and life events. Retailers sell your purchase history; these brokers package it and resell it to anyone willing to pay.",
+    howTheyGetData: "Loyalty card programs, receipt-scanning apps, retail data partnerships, and credit card transaction data."
+  }
+};
+
 export const BROKERS = [
-  { id: 1,  name: "Acxiom",             category: "Behavioral", optOut: "https://isapps.acxiom.com/optout/optout.aspx" },
-  { id: 2,  name: "LexisNexis",         category: "Identity",   optOut: "https://optout.lexisnexis.com" },
-  { id: 3,  name: "Spokeo",             category: "Identity",   optOut: "https://www.spokeo.com/optout" },
-  { id: 4,  name: "WhitePages",         category: "Identity",   optOut: "https://www.whitepages.com/suppression-requests" },
-  { id: 5,  name: "BeenVerified",       category: "Identity",   optOut: "https://www.beenverified.com/app/optout/search" },
-  { id: 6,  name: "Intelius",           category: "Identity",   optOut: "https://intelius.com/opt-out" },
-  { id: 7,  name: "PeopleFinder",       category: "Identity",   optOut: "https://www.peoplefinders.com/opt-out" },
-  { id: 8,  name: "MyLife",             category: "Identity",   optOut: "https://www.mylife.com/privacy/remove-my-information.pubview" },
-  { id: 9,  name: "Radaris",            category: "Identity",   optOut: "https://radaris.com/page/how-to-remove" },
-  { id: 10, name: "TruthFinder",        category: "Identity",   optOut: "https://www.truthfinder.com/opt-out/" },
-  { id: 11, name: "Epsilon",            category: "Behavioral", optOut: "https://us.epsilon.com/privacy/email-opt-out" },
-  { id: 12, name: "Oracle Data Cloud",  category: "Behavioral", optOut: "https://datacloudoptout.oracle.com/optout" },
-  { id: 13, name: "Equifax",            category: "Financial",  optOut: "https://www.equifax.com/personal/privacy/" },
-  { id: 14, name: "Experian",           category: "Financial",  optOut: "https://www.experian.com/privacy/center.html" },
-  { id: 15, name: "TransUnion",         category: "Financial",  optOut: "https://www.transunion.com/consumer-privacy" },
-  { id: 16, name: "Nielsen",            category: "Behavioral", optOut: "https://www.nielsen.com/us/en/legal/privacy-statement/exiting-nielsen-measurement/" },
-  { id: 17, name: "Comscore",           category: "Behavioral", optOut: "https://www.comscore.com/About-comScore/Privacy-Policy" },
-  { id: 18, name: "LiveRamp",           category: "Behavioral", optOut: "https://liveramp.com/opt_out/" },
-  { id: 19, name: "Neustar",            category: "Identity",   optOut: "https://www.home.neustar/privacy" },
-  { id: 20, name: "Verisk",             category: "Financial",  optOut: "https://www.verisk.com/privacy-commitment/" },
-  { id: 21, name: "CoreLogic",          category: "Financial",  optOut: "https://www.corelogic.com/privacy-center/" },
-  { id: 22, name: "Dun & Bradstreet",   category: "Financial",  optOut: "https://www.dnb.com/utility-pages/ccpa.html" },
-  { id: 23, name: "ZoomInfo",           category: "Identity",   optOut: "https://www.zoominfo.com/about/privacy/data-deletion" },
-  { id: 24, name: "Clearbit",           category: "Behavioral", optOut: "https://clearbit.com/privacy" },
-  { id: 25, name: "FullContact",        category: "Identity",   optOut: "https://www.fullcontact.com/privacy/privacy-options/" },
-  { id: 26, name: "Kochava",            category: "Location",   optOut: "https://kochchoices.com/" },
-  { id: 27, name: "AppsFlyer",          category: "Behavioral", optOut: "https://www.appsflyer.com/legal/services-privacy-policy/" },
-  { id: 28, name: "Segment",            category: "Behavioral", optOut: "https://www.twilio.com/en-us/legal/privacy" },
-  { id: 29, name: "mParticle",          category: "Behavioral", optOut: "https://www.mparticle.com/privacypolicy" },
-  { id: 30, name: "Klaviyo",            category: "Purchase",   optOut: "https://www.klaviyo.com/legal/privacy-notice" },
-  { id: 31, name: "Lotame",             category: "Behavioral", optOut: "https://www.lotame.com/about-lotame/privacy/lotames-products-technologies-privacy-policy/opt-out/" },
-  { id: 32, name: "Tapad",              category: "Behavioral", optOut: "https://www.tapad.com/privacy" },
-  { id: 33, name: "Datalogix",          category: "Purchase",   optOut: "https://datacloudoptout.oracle.com/optout" },
-  { id: 34, name: "Sift",              category: "Behavioral", optOut: "https://sift.com/legal/privacy-policy" },
-  { id: 35, name: "Rockerbox",          category: "Purchase",   optOut: "https://www.rockerbox.com/legal/privacy" },
-  { id: 36, name: "Harte-Hanks",        category: "Purchase",   optOut: "https://www.hartehanks.com/privacy-policy/" },
-  { id: 37, name: "Merkle",             category: "Behavioral", optOut: "https://www.merkleinc.com/privacy-policy" },
-  { id: 38, name: "InstantCheckmate",   category: "Identity",   optOut: "https://www.instantcheckmate.com/opt-out/" },
-  { id: 39, name: "PeopleSmart",        category: "Identity",   optOut: "https://www.peoplesmart.com/opt-out-request" },
-  { id: 40, name: "Spokeo (Profile)",   category: "Identity",   optOut: "https://www.spokeo.com/optout" }
+  { id: 1,  name: "Acxiom",             category: "Identity",   description: "One of the world's largest consumer data companies. Holds profiles on over 2.5 billion people globally, aggregating names, addresses, household composition, and purchase history.", optOut: "https://isapps.acxiom.com/optout/optout.aspx" },
+  { id: 2,  name: "LexisNexis",         category: "Identity",   description: "Legal research firm that also operates a massive data brokerage. Aggregates court documents, public records, and financial history to build identity profiles used in background checks.", optOut: "https://optout.lexisnexis.com" },
+  { id: 3,  name: "Spokeo",             category: "Identity",   description: "People-search engine that compiles public records, social media activity, and contact info into searchable profiles on private individuals, sold to anyone who pays.", optOut: "https://www.spokeo.com/optout" },
+  { id: 4,  name: "WhitePages",         category: "Identity",   description: "One of the oldest people-search services. Aggregates home addresses, phone numbers, and relatives from public and commercial sources, accessible to anyone online.", optOut: "https://www.whitepages.com/suppression-requests" },
+  { id: 5,  name: "BeenVerified",       category: "Identity",   description: "Background check site that sells access to people's names, addresses, criminal records, and social media profiles. Marketed directly to the public as a 'people finder.'", optOut: "https://www.beenverified.com/app/optout/search" },
+  { id: 6,  name: "Intelius",           category: "Identity",   description: "Sells background reports including home addresses, phone numbers, court records, and social profiles. No consent is required from the person being searched.", optOut: "https://intelius.com/opt-out" },
+  { id: 7,  name: "PeopleFinder",       category: "Identity",   description: "Aggregates public records and social data to create searchable profiles including past addresses, family connections, and contact history.", optOut: "https://www.peoplefinders.com/opt-out" },
+  { id: 8,  name: "MyLife",             category: "Identity",   description: "Generates 'reputation scores' on private individuals using public records — then charges people money to manage their own profiles. Settled with the FTC in 2022 over deceptive practices.", optOut: "https://www.mylife.com/privacy/remove-my-information.pubview" },
+  { id: 9,  name: "Radaris",            category: "Identity",   description: "Aggregates data from public records, social networks, and commercial databases to build comprehensive people-search profiles available to any visitor.", optOut: "https://radaris.com/page/how-to-remove" },
+  { id: 10, name: "TruthFinder",        category: "Identity",   description: "Background check service compiling criminal records, addresses, and personal history. Widely used to look up private individuals without their knowledge.", optOut: "https://www.truthfinder.com/opt-out/" },
+  { id: 19, name: "Neustar",            category: "Identity",   description: "Provides identity verification and data services to financial institutions, telcos, and marketers using phone, address, and device data to link offline and online identities.", optOut: "https://www.home.neustar/privacy" },
+  { id: 23, name: "ZoomInfo",           category: "Identity",   description: "Business intelligence firm that scrapes and sells professional profiles — work email, phone, job title, and company — without the individual's consent. Used widely in sales and marketing.", optOut: "https://www.zoominfo.com/about/privacy/data-deletion" },
+  { id: 25, name: "FullContact",        category: "Identity",   description: "Identity resolution company that links email addresses, phone numbers, and social handles into unified consumer profiles sold to marketing teams.", optOut: "https://www.fullcontact.com/privacy/privacy-options/" },
+  { id: 38, name: "InstantCheckmate",   category: "Identity",   description: "Public records aggregator selling background reports on private individuals, including criminal records, arrest history, addresses, and personal connections.", optOut: "https://www.instantcheckmate.com/opt-out/" },
+  { id: 39, name: "PeopleSmart",        category: "Identity",   description: "People-search service that compiles contact information, social profiles, and background data from public and commercial sources for any paying user.", optOut: "https://www.peoplesmart.com/opt-out-request" },
+  { id: 40, name: "Spokeo (Profile)",   category: "Identity",   description: "Spokeo's profile product aggregates social media activity and personal connections alongside contact and address data into a single purchasable profile.", optOut: "https://www.spokeo.com/optout" },
+  { id: 13, name: "Equifax",            category: "Financial",  description: "One of the three major credit bureaus, holding detailed financial histories for nearly every US adult. Also sells consumer marketing segments to companies targeting based on financial behavior.", optOut: "https://www.equifax.com/personal/privacy/" },
+  { id: 14, name: "Experian",           category: "Financial",  description: "Global credit bureau that also operates a large marketing database division, selling consumer financial profiles and audience segments to advertisers.", optOut: "https://www.experian.com/privacy/center.html" },
+  { id: 15, name: "TransUnion",         category: "Financial",  description: "Credit bureau that runs a parallel data brokerage business, selling consumer financial profiles for marketing and risk-scoring purposes beyond credit reporting.", optOut: "https://www.transunion.com/consumer-privacy" },
+  { id: 20, name: "Verisk",             category: "Financial",  description: "Provides risk analytics to insurance companies, using personal financial and behavioral data to build claims histories and risk scores that affect your insurance rates.", optOut: "https://www.verisk.com/privacy-commitment/" },
+  { id: 21, name: "CoreLogic",          category: "Financial",  description: "Aggregates real estate and mortgage data, holding detailed property histories and financial profiles for most US homeowners, used by insurers and lenders.", optOut: "https://www.corelogic.com/privacy-center/" },
+  { id: 22, name: "Dun & Bradstreet",   category: "Financial",  description: "Builds business and professional profiles that include income estimates, employer data, and credit risk scores used in B2B marketing and lending decisions.", optOut: "https://www.dnb.com/utility-pages/ccpa.html" },
+  { id: 11, name: "Epsilon",            category: "Behavioral", description: "A major ad-tech company holding profiles on over 250 million US consumers. Links purchase history, loyalty programs, and browsing behavior to power personalized advertising campaigns.", optOut: "https://us.epsilon.com/privacy/email-opt-out" },
+  { id: 12, name: "Oracle Data Cloud",  category: "Behavioral", description: "Oracle's data brokerage arm aggregates offline purchase records, credit card transactions, and online behavior. Its data touches nearly every major advertising campaign run online.", optOut: "https://datacloudoptout.oracle.com/optout" },
+  { id: 16, name: "Nielsen",            category: "Behavioral", description: "Best known for TV ratings, but also sells household-level behavioral profiles used to target advertising across TV, digital, and streaming platforms worldwide.", optOut: "https://www.nielsen.com/us/en/legal/privacy-statement/exiting-nielsen-measurement/" },
+  { id: 17, name: "Comscore",           category: "Behavioral", description: "Measures digital audience behavior across websites and apps at scale, selling behavioral data that advertisers use to reach specific audience segments.", optOut: "https://www.comscore.com/About-comScore/Privacy-Policy" },
+  { id: 18, name: "LiveRamp",           category: "Behavioral", description: "Specializes in 'identity resolution' — linking your offline identity to your online behavior to enable cross-device ad targeting without your knowledge.", optOut: "https://liveramp.com/opt_out/" },
+  { id: 24, name: "Clearbit",           category: "Behavioral", description: "Enriches marketing databases by linking email addresses to behavioral and demographic profiles sourced from across the web.", optOut: "https://clearbit.com/privacy" },
+  { id: 27, name: "AppsFlyer",          category: "Behavioral", description: "Mobile attribution platform embedded in thousands of apps. Tracks which ads lead to app installs and builds profiles of your mobile app behavior.", optOut: "https://www.appsflyer.com/legal/services-privacy-policy/" },
+  { id: 28, name: "Segment",            category: "Behavioral", description: "Customer data platform owned by Twilio. Collects detailed behavioral event data across websites and apps and routes it to advertising tools.", optOut: "https://www.twilio.com/en-us/legal/privacy" },
+  { id: 29, name: "mParticle",          category: "Behavioral", description: "Collects granular behavioral data from mobile apps and websites, unifying it into persistent consumer profiles shared with advertising and analytics partners.", optOut: "https://www.mparticle.com/privacypolicy" },
+  { id: 31, name: "Lotame",             category: "Behavioral", description: "Data management platform that collects and sells audience segments based on browsing behavior, demographics, and inferred interests to advertising buyers globally.", optOut: "https://www.lotame.com/about-lotame/privacy/lotames-products-technologies-privacy-policy/opt-out/" },
+  { id: 32, name: "Tapad",              category: "Behavioral", description: "Device-linking company that identifies which phones, laptops, and TVs belong to the same person, enabling advertisers to track you consistently across every screen.", optOut: "https://www.tapad.com/privacy" },
+  { id: 34, name: "Sift",               category: "Behavioral", description: "Fraud detection company that builds behavioral profiles of how you interact with websites and apps. This data is sold to platforms for identity verification and risk assessment.", optOut: "https://sift.com/legal/privacy-policy" },
+  { id: 37, name: "Merkle",             category: "Behavioral", description: "CRM and data analytics firm that builds consumer profiles by linking purchase data, credit information, and behavioral signals for precision ad targeting.", optOut: "https://www.merkleinc.com/privacy-policy" },
+  { id: 26, name: "Kochava",            category: "Location",   description: "Mobile analytics company that tracks location data from smartphone apps, building movement histories used for location-based advertising. Has faced FTC investigation for selling location data.", optOut: "https://kochchoices.com/" },
+  { id: 30, name: "Klaviyo",            category: "Purchase",   description: "Email marketing platform that tracks purchase behavior, browsing history, and email engagement for retail brands, enabling highly targeted advertising based on what you buy.", optOut: "https://www.klaviyo.com/legal/privacy-notice" },
+  { id: 33, name: "Datalogix",          category: "Purchase",   description: "Now part of Oracle. Pioneered linking online ad exposure to offline store purchases, proving which ads made you buy things. Sells purchase-intent data to advertisers.", optOut: "https://datacloudoptout.oracle.com/optout" },
+  { id: 35, name: "Rockerbox",          category: "Purchase",   description: "Marketing attribution company that reconstructs the customer journey from first ad impression to final purchase, across every channel.", optOut: "https://www.rockerbox.com/legal/privacy" },
+  { id: 36, name: "Harte-Hanks",        category: "Purchase",   description: "Direct marketing company maintaining consumer databases built from purchase history, survey responses, and public records for targeted mail and digital advertising campaigns.", optOut: "https://www.hartehanks.com/privacy-policy/" }
 ];
 
-// Which data classes from a breach map to which broker categories,
-// used to highlight "at risk" brokers based on breach results
 export const DATA_CLASS_TO_CATEGORY = {
-  "Email addresses": ["Behavioral", "Identity"],
-  "Phone numbers":   ["Identity"],
-  "Names":           ["Identity"],
-  "Physical addresses": ["Location", "Identity"],
+  "Email addresses":      ["Behavioral", "Identity"],
+  "Phone numbers":        ["Identity"],
+  "Names":                ["Identity"],
+  "Physical addresses":   ["Location", "Identity"],
   "Geographic locations": ["Location"],
-  "Financial data":  ["Financial"],
-  "Credit cards":    ["Financial"],
+  "Financial data":       ["Financial"],
+  "Credit cards":         ["Financial"],
   "Bank account numbers": ["Financial"],
-  "Purchase history": ["Purchase"],
-  "Purchases":       ["Purchase"],
-  "Passwords":       ["Identity"],
-  "Usernames":       ["Identity"],
-  "IP addresses":    ["Behavioral", "Location"],
-  "Device information": ["Behavioral"],
-  "Browsing histories": ["Behavioral"],
-  "Social connections": ["Behavioral"]
+  "Purchase history":     ["Purchase"],
+  "Purchases":            ["Purchase"],
+  "Passwords":            ["Identity"],
+  "Usernames":            ["Identity"],
+  "IP addresses":         ["Behavioral", "Location"],
+  "Device information":   ["Behavioral"],
+  "Browsing histories":   ["Behavioral"],
+  "Social connections":   ["Behavioral"]
 };

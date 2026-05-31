@@ -7,13 +7,6 @@ import CountUp from 'react-countup';
 import SourceTooltip from './SourceTooltip';
 import { SOURCES } from '../data/sources';
 
-/**
- * Feature 3 — Personal Data Value Estimator.
- *
- * All dollar figures are ESTIMATES derived from public earnings reports and
- * academic research. They are clearly labeled as such throughout.
- */
-
 // Quiz question definitions
 const QUESTIONS = [
   {
@@ -256,19 +249,10 @@ export default function DataValueEstimator({ onValueChange }) {
 
   return (
     <div className="card p-8">
-      {/* Section header */}
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-yellow-400 text-xl">💰</span>
-        <span className="text-xs font-semibold text-yellow-400 uppercase tracking-widest">
-          Feature 3
-        </span>
-      </div>
+      <h2 className="section-heading">What Is Your Data Worth?</h2>
 
-      <h2 className="section-heading">Your Data Value Estimator</h2>
-
-      {/* Mandatory estimate disclaimer */}
       <div className="source-disclaimer mb-6">
-        <strong className="text-white">💡 These are estimates</strong> based on publicly available data from
+        <strong className="text-white">These are estimates</strong> based on publicly available data from
         Meta, Alphabet, and TikTok quarterly earnings reports, and academic research from
         Vanderbilt University and the Financial Times.
         Your actual value to advertisers may vary. Hover the{' '}
