@@ -5,12 +5,52 @@ const STORAGE_KEY = 'datatrace_optouts';
 const CATEGORY_ORDER = ['Identity', 'Financial', 'Behavioral', 'Location', 'Purchase'];
 
 const CATEGORY_ICONS = {
-  Identity:   { bg: 'bg-blue-50',   border: 'border-blue-200',   text: 'text-blue-700',   icon: '🪪' },
-  Financial:  { bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700',  icon: '💳' },
-  Behavioral: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', icon: '👁' },
-  Location:   { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', icon: '📍' },
-  Purchase:   { bg: 'bg-red-50',    border: 'border-red-200',    text: 'text-red-700',    icon: '🛒' },
+  Identity:   { bg: 'bg-blue-50',   border: 'border-blue-200',   text: 'text-blue-700' },
+  Financial:  { bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700' },
+  Behavioral: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
+  Location:   { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' },
+  Purchase:   { bg: 'bg-red-50',    border: 'border-red-200',    text: 'text-red-700' },
 };
+
+function CategoryIcon({ category, className }) {
+  const cls = className || 'w-5 h-5';
+  if (category === 'Identity') {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 8h2M15 12h2M7 16h10"/>
+      </svg>
+    );
+  }
+  if (category === 'Financial') {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+      </svg>
+    );
+  }
+  if (category === 'Behavioral') {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+      </svg>
+    );
+  }
+  if (category === 'Location') {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+      </svg>
+    );
+  }
+  if (category === 'Purchase') {
+    return (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+    );
+  }
+  return null;
+}
 
 function loadOptOuts() {
   try {
@@ -160,7 +200,7 @@ export default function DataBrokerList({ breachDataClasses, onOptOutChange }) {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-base">{s.icon}</span>
+                    <CategoryIcon category={cat} className="w-5 h-5" />
                     <span className="font-semibold text-sm">{cat}</span>
                   </div>
                   <p className="text-xs mt-0.5 opacity-70">{opted}/{brokers.length} removed</p>
@@ -185,7 +225,7 @@ export default function DataBrokerList({ breachDataClasses, onOptOutChange }) {
                       : 'bg-white border-gray-200 text-gray-600'
                   }`}
                 >
-                  <span>{s.icon}</span>
+                  <CategoryIcon category={cat} className="w-4 h-4" />
                   {cat}
                 </button>
               );
@@ -198,7 +238,7 @@ export default function DataBrokerList({ breachDataClasses, onOptOutChange }) {
           {/* Category header — always visible */}
           <div className={`${style.bg} ${style.border} border rounded-xl p-6`}>
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">{CATEGORY_ICONS[selectedCategory].icon}</span>
+              <CategoryIcon category={selectedCategory} className="w-6 h-6" />
               <h3 className={`text-xl font-bold ${style.text}`}>{info.title}</h3>
               <span className="ml-auto text-sm text-gray-500">{optedOutInCategory}/{categoryBrokers.length} removed</span>
             </div>

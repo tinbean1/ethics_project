@@ -11,16 +11,25 @@ const STEPS = [
     id: 1,
     label: 'Your Online Life',
     questionIds: ['platforms', 'google', 'streaming'],
+    gradientClass: 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200',
+    accentColor: 'bg-blue-600 text-white border-blue-600',
+    indicatorColor: 'bg-blue-600',
   },
   {
     id: 2,
     label: 'Your Habits',
     questionIds: ['shopping', 'healthApps', 'smartHome'],
+    gradientClass: 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200',
+    accentColor: 'bg-purple-600 text-white border-purple-600',
+    indicatorColor: 'bg-purple-600',
   },
   {
     id: 3,
     label: 'Your Profile',
     questionIds: ['age', 'location', 'income'],
+    gradientClass: 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200',
+    accentColor: 'bg-orange-500 text-white border-orange-500',
+    indicatorColor: 'bg-orange-500',
   },
 ];
 
@@ -228,7 +237,7 @@ function CustomBarTooltip({ active, payload, label }) {
   return null;
 }
 
-function QuestionCard({ question, answers, onAnswer }) {
+function QuestionCard({ question, answers, onAnswer, accentColor }) {
   const current = answers[question.id];
 
   const handleClick = (option) => {
@@ -253,6 +262,8 @@ function QuestionCard({ question, answers, onAnswer }) {
     return current === option;
   };
 
+  const selectedClass = accentColor || 'bg-gray-900 border-gray-900 text-white';
+
   return (
     <div className="card p-6">
       <p className="font-semibold text-gray-900 mb-1">{question.label}</p>
@@ -266,7 +277,7 @@ function QuestionCard({ question, answers, onAnswer }) {
             onClick={() => handleClick(opt)}
             className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
               isSelected(opt)
-                ? 'bg-gray-900 border-gray-900 text-white shadow-sm'
+                ? `${selectedClass} shadow-sm`
                 : 'bg-white border-gray-300 text-gray-600 hover:border-gray-500 hover:text-gray-900'
             }`}
           >
@@ -293,9 +304,9 @@ function StepIndicator({ currentStep, completedSteps }) {
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                   isCompleted
-                    ? 'bg-gray-900 text-white'
+                    ? `${step.indicatorColor} text-white`
                     : isCurrent
-                      ? 'bg-gray-900 text-white'
+                      ? `${step.indicatorColor} text-white`
                       : 'bg-white border-2 border-gray-300 text-gray-400'
                 }`}
               >
@@ -339,6 +350,10 @@ export default function DataValueEstimator({ onValueChange }) {
   };
 
   const { total, factors } = computeValue(answers);
+
+  // Running total from current answers (same computation, renamed for clarity)
+  const { total: runningTotal, factors: runningFactorsRaw } = computeValue(answers);
+  const runningFactors = [...runningFactorsRaw].sort((a, b) => b.value - a.value);
 
   // Check if all required questions in the current step are answered
   const currentStepDef = STEPS.find(s => s.id === currentStep);
@@ -580,11 +595,74 @@ export default function DataValueEstimator({ onValueChange }) {
         </h3>
       </div>
 
-      {/* Questions for current step */}
-      <div className="space-y-4 mb-8">
-        {currentStepQuestions.map(q => (
-          <QuestionCard key={q.id} question={q} answers={answers} onAnswer={handleAnswer} />
-        ))}
+      {/* Step card with gradient background */}
+      <div className={`${currentStepDef.gradientClass} border rounded-xl p-6 mb-6`}>
+        {/* Questions for current step */}
+        <div className="space-y-4">
+          {currentStepQuestions.map(q => (
+            <QuestionCard
+              key={q.id}
+              question={q}
+              answers={answers}
+              onAnswer={handleAnswer}
+              accentColor={currentStepDef.accentColor}
+            />
+          ))}
+        </div>
+
+        {/* Shocking stat callouts — Step 1 */}
+        {currentStep === 1 && (
+          <div className="space-y-3 mt-4">
+            {Array.isArray(answers.platforms) && answers.platforms.includes('Facebook') && (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800">
+                <strong>Meta made $131.9 billion</strong> in advertising revenue in 2023 — almost entirely from profiling users like you. Source: Meta Q4 2023 earnings.
+              </div>
+            )}
+            {answers.google === 'Yes, most of them' && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-800">
+                <strong>Google processes over 8.5 billion searches per day</strong> and uses every one to refine your advertising profile. Source: Alphabet 2023 Annual Report.
+              </div>
+            )}
+            {Array.isArray(answers.platforms) && answers.platforms.includes('TikTok') && (
+              <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800">
+                <strong>TikTok's privacy policy explicitly permits collecting biometric data</strong> including faceprints and voiceprints from your content. Source: TikTok Privacy Policy, 2023.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Shocking stat callouts — Step 2 */}
+        {currentStep === 2 && (
+          <div className="space-y-3 mt-4">
+            {answers.healthApps === 'Yes regularly' && (
+              <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl text-sm text-purple-800">
+                <strong>Health app data is sold to insurers, employers, and marketers</strong> — a 2023 Duke University study found 96% of health apps share data with third parties. Source: Duke Sanford School of Public Policy, 2023.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Live bar chart — show when there are multiple factors */}
+        {runningFactors.length > 1 && (
+          <div className="mt-4 p-4 bg-white rounded-xl border border-gray-200">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Value breakdown so far</p>
+            {runningFactors.slice(0, 6).map((f, i) => (
+              <div key={f.name} className="flex items-center gap-2 mb-1.5">
+                <span className="text-xs text-gray-600 w-36 truncate flex-shrink-0">{f.name}</span>
+                <div className="flex-1 bg-gray-100 rounded-full h-2">
+                  <div
+                    className="h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min(100, (f.value / runningFactors[0].value) * 100)}%`,
+                      backgroundColor: PIE_COLORS[i % PIE_COLORS.length]
+                    }}
+                  />
+                </div>
+                <span className="text-xs font-mono text-gray-700 w-14 text-right">${f.value.toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Navigation buttons */}
@@ -615,10 +693,19 @@ export default function DataValueEstimator({ onValueChange }) {
 
       {/* Sticky running total bar */}
       {hasAnyAnswer && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 py-3 px-4">
-          <p className="text-center text-sm text-gray-600">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 text-white border-t border-gray-700 py-3 px-4">
+          <p className="text-center text-sm text-gray-300">
             Estimated so far:{' '}
-            <span className="font-bold text-gray-900">${total.toFixed(2)} / year</span>
+            <span className="text-lg font-bold text-white">
+              $<CountUp
+                end={runningTotal}
+                decimals={2}
+                duration={0.6}
+                separator=","
+                preserveValue={true}
+              />
+            </span>
+            <span className="text-gray-400"> / year</span>
           </p>
         </div>
       )}
