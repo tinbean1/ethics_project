@@ -5,8 +5,6 @@ const PLATFORMS = [
     name: 'Google',
     logo: 'https://www.google.com/s2/favicons?domain=google.com&sz=128',
     brandColor: '#4285F4',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'Google builds detailed profiles from your searches, location, YouTube history, and Gmail to serve targeted ads across its vast network of products and partner sites.',
     partners: [
@@ -37,8 +35,6 @@ const PLATFORMS = [
     name: 'Meta (Facebook)',
     logo: 'https://www.google.com/s2/favicons?domain=facebook.com&sz=128',
     brandColor: '#1877F2',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'Meta does not technically "sell" your data but shares it extensively with advertisers and uses the Facebook Pixel to track you across millions of third-party websites.',
     partners: [
@@ -69,8 +65,6 @@ const PLATFORMS = [
     name: 'Instagram',
     logo: 'https://www.google.com/s2/favicons?domain=instagram.com&sz=128',
     brandColor: '#E1306C',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'Owned by Meta, Instagram shares the same advertising infrastructure and data-sharing practices, tracking your activity on and off the app to serve targeted ads.',
     partners: [
@@ -99,8 +93,6 @@ const PLATFORMS = [
     name: 'TikTok',
     logo: 'https://www.google.com/s2/favicons?domain=tiktok.com&sz=128',
     brandColor: '#010101',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'TikTok collects an unusually broad set of device and behavioral data, including biometric identifiers, and its parent company ByteDance is subject to Chinese data laws.',
     partners: [
@@ -130,8 +122,6 @@ const PLATFORMS = [
     name: 'X (Twitter)',
     logo: 'https://www.google.com/s2/favicons?domain=twitter.com&sz=128',
     brandColor: '#000000',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'Since Elon Musk\'s acquisition, X updated its privacy policy to use public posts and interactions to train its Grok AI model, with opt-out buried in settings.',
     partners: [
@@ -161,8 +151,6 @@ const PLATFORMS = [
     name: 'Snapchat',
     logo: 'https://www.google.com/s2/favicons?domain=snapchat.com&sz=128',
     brandColor: '#FFFC00',
-    rating: 'Moderate',
-    color: 'yellow-600',
     summary:
       'Snapchat collects location and device data for ad targeting and uses your content to improve its AI and AR features, but messages between users are encrypted in transit.',
     partners: [
@@ -191,8 +179,6 @@ const PLATFORMS = [
     name: 'LinkedIn',
     logo: 'https://www.google.com/s2/favicons?domain=linkedin.com&sz=128',
     brandColor: '#0A66C2',
-    rating: 'Moderate',
-    color: 'yellow-600',
     summary:
       'LinkedIn uses your professional profile, connections, and activity to serve job and B2B ads, and it shares data with its parent company Microsoft for cross-product use.',
     partners: [
@@ -222,8 +208,6 @@ const PLATFORMS = [
     name: 'Amazon',
     logo: 'https://www.google.com/s2/favicons?domain=amazon.com&sz=128',
     brandColor: '#FF9900',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'Amazon combines purchase history, browsing, Alexa voice recordings, and Prime Video viewing to build comprehensive consumer profiles used for ads and sold insights.',
     partners: [
@@ -254,8 +238,6 @@ const PLATFORMS = [
     name: 'Apple',
     logo: 'https://www.google.com/s2/favicons?domain=apple.com&sz=128',
     brandColor: '#555555',
-    rating: 'Transparent',
-    color: 'green-600',
     summary:
       'Apple positions itself as privacy-first, processes most data on-device, does not sell personal data, and requires explicit opt-in for cross-app tracking via its ATT framework.',
     partners: [
@@ -285,8 +267,6 @@ const PLATFORMS = [
     name: 'Spotify',
     logo: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=128',
     brandColor: '#1DB954',
-    rating: 'Moderate',
-    color: 'yellow-600',
     summary:
       'Spotify uses listening history, mood inferences, and podcast behavior to serve targeted ads on the free tier and shares aggregated data with record labels and podcast partners.',
     partners: [
@@ -315,8 +295,6 @@ const PLATFORMS = [
     name: 'YouTube',
     logo: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=128',
     brandColor: '#FF0000',
-    rating: 'Aggressive',
-    color: 'red-600',
     summary:
       'As part of Google, YouTube links your watch history, search queries, and ad interactions to your Google profile, enabling cross-platform targeting across all Google services.',
     partners: [
@@ -346,8 +324,6 @@ const PLATFORMS = [
     name: 'Microsoft',
     logo: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
     brandColor: '#00A4EF',
-    rating: 'Moderate',
-    color: 'yellow-600',
     summary:
       'Microsoft collects data across Windows, Office, Xbox, LinkedIn, and Bing, using it for ad targeting and to improve AI products like Copilot, with enterprise controls available.',
     partners: [
@@ -386,11 +362,6 @@ const PRACTICE_ROWS = [
   { key: 'dataRetention', label: 'Data Retention', badForUser: null },
 ];
 
-const RATING_CONFIG = {
-  Aggressive: { bg: 'bg-red-50', text: 'text-red-600', border: 'border-red-200' },
-  Moderate: { bg: 'bg-yellow-50', text: 'text-yellow-600', border: 'border-yellow-200' },
-  Transparent: { bg: 'bg-green-50', text: 'text-green-600', border: 'border-green-200' },
-};
 
 function BoolPill({ value, badForUser }) {
   const isGood = badForUser ? !value : value;
@@ -415,7 +386,6 @@ function BoolPill({ value, badForUser }) {
 }
 
 function PlatformDetail({ platform }) {
-  const rc = RATING_CONFIG[platform.rating];
   return (
     <div className="space-y-6">
       {/* Header row */}
@@ -434,9 +404,6 @@ function PlatformDetail({ platform }) {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-2xl font-bold text-gray-900 leading-tight">{platform.name}</h3>
-          <span className={`inline-block mt-1 text-xs font-semibold px-2.5 py-1 rounded-full border ${rc.bg} ${rc.text} ${rc.border}`}>
-            {platform.rating}
-          </span>
         </div>
       </div>
 
@@ -526,22 +493,6 @@ function PlatformDetail({ platform }) {
         </div>
       )}
 
-      {/* Rating legend at bottom */}
-      <div className="pt-2 border-t border-gray-100">
-        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-2">Rating scale</p>
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(RATING_CONFIG).map(([rating, rc]) => (
-            <span
-              key={rating}
-              className={`text-xs font-medium px-2.5 py-1 rounded-full border ${rc.bg} ${rc.text} ${rc.border}`}
-            >
-              {rating === 'Aggressive' && '● Aggressive'}
-              {rating === 'Moderate' && '● Moderate'}
-              {rating === 'Transparent' && '● Transparent'}
-            </span>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
