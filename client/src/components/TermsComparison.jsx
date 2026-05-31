@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const PLATFORMS = [
   {
     name: 'Google',
+    logo: 'https://logo.clearbit.com/google.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -21,6 +22,7 @@ const PLATFORMS = [
   },
   {
     name: 'Meta (Facebook)',
+    logo: 'https://logo.clearbit.com/facebook.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -39,6 +41,7 @@ const PLATFORMS = [
   },
   {
     name: 'Instagram',
+    logo: 'https://logo.clearbit.com/instagram.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -57,6 +60,7 @@ const PLATFORMS = [
   },
   {
     name: 'TikTok',
+    logo: 'https://logo.clearbit.com/tiktok.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -75,6 +79,7 @@ const PLATFORMS = [
   },
   {
     name: 'X (Twitter)',
+    logo: 'https://logo.clearbit.com/twitter.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -93,6 +98,7 @@ const PLATFORMS = [
   },
   {
     name: 'Snapchat',
+    logo: 'https://logo.clearbit.com/snapchat.com',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
@@ -111,6 +117,7 @@ const PLATFORMS = [
   },
   {
     name: 'LinkedIn',
+    logo: 'https://logo.clearbit.com/linkedin.com',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
@@ -129,6 +136,7 @@ const PLATFORMS = [
   },
   {
     name: 'Amazon',
+    logo: 'https://logo.clearbit.com/amazon.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -147,6 +155,7 @@ const PLATFORMS = [
   },
   {
     name: 'Apple',
+    logo: 'https://logo.clearbit.com/apple.com',
     rating: 'Transparent',
     color: 'green-600',
     summary:
@@ -165,6 +174,7 @@ const PLATFORMS = [
   },
   {
     name: 'Spotify',
+    logo: 'https://logo.clearbit.com/spotify.com',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
@@ -183,6 +193,7 @@ const PLATFORMS = [
   },
   {
     name: 'YouTube',
+    logo: 'https://logo.clearbit.com/youtube.com',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
@@ -201,6 +212,7 @@ const PLATFORMS = [
   },
   {
     name: 'Microsoft',
+    logo: 'https://logo.clearbit.com/microsoft.com',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
@@ -271,6 +283,15 @@ function PlatformCard({ platform }) {
   const rc = RATING_CONFIG[platform.rating];
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col gap-3 shadow-sm">
+      <img
+        src={platform.logo}
+        alt={platform.name}
+        className="w-10 h-10 rounded-lg object-contain"
+        onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+      />
+      <div style={{display:'none'}} className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg">
+        {platform.name[0]}
+      </div>
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-bold text-gray-900 text-base leading-tight">{platform.name}</h3>
         <span
@@ -347,7 +368,7 @@ export default function TermsComparison() {
 
       {/* Card grid */}
       {view === 'cards' && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {PLATFORMS.map(p => (
             <PlatformCard key={p.name} platform={p} />
           ))}
@@ -383,9 +404,20 @@ export default function TermsComparison() {
                   >
                     <td className={`sticky left-0 z-10 px-4 py-3 border-r border-gray-200 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                       <div className="flex flex-col gap-1">
-                        <span className="font-semibold text-gray-900 whitespace-nowrap">
-                          {p.name}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={p.logo}
+                            alt={p.name}
+                            className="w-6 h-6 rounded object-contain shrink-0"
+                            onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+                          />
+                          <div style={{display:'none'}} className="w-6 h-6 rounded bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xs shrink-0">
+                            {p.name[0]}
+                          </div>
+                          <span className="font-semibold text-gray-900 whitespace-nowrap">
+                            {p.name}
+                          </span>
+                        </div>
                         <span
                           className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit border ${rc.bg} ${rc.text} ${rc.border}`}
                         >

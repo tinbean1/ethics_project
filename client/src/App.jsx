@@ -38,7 +38,7 @@ export default function App() {
 
       {/* Header */}
       <header className="bg-white border-b border-[#E5E7EB]">
-        <div className="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
+        <div className="max-w-6xl mx-auto px-4 pt-10 pb-6 text-center">
           <h1 className="text-5xl font-black text-[#111827] tracking-tight mb-4">
             Data<span className="text-red-600">Trace</span>
           </h1>
@@ -49,7 +49,7 @@ export default function App() {
         </div>
 
         {/* Tab bar */}
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="flex gap-1">
             {TABS.map(tab => (
               <button
@@ -68,7 +68,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {activeTab === 'value' && (
           <DataValueEstimator onValueChange={setEstimatedValue} />
         )}
