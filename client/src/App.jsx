@@ -69,26 +69,42 @@ export default function App() {
         </p>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 space-y-16">
-        <section id="breach-checker">
-          <HomePage onSearch={handleSearch} isLoading={isLoading} />
-        </section>
+      <main className="max-w-7xl mx-auto px-4 space-y-16">
+        <div className="max-w-4xl mx-auto">
+          <section id="breach-checker">
+            <HomePage onSearch={handleSearch} isLoading={isLoading} />
+          </section>
+        </div>
 
-        {(breachData || isLoading) && (
+        {(breachData || isLoading) ? (
           <section id="breach-results">
-            <BreachResults data={breachData} email={searchedEmail} isLoading={isLoading} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <div className="lg:sticky lg:top-6">
+                <BreachResults data={breachData} email={searchedEmail} isLoading={isLoading} />
+              </div>
+              <div>
+                <DataBrokerList
+                  breachDataClasses={breachData?.breaches?.flatMap(b => b.DataClasses) ?? []}
+                  onOptOutChange={handleOptOutChange}
+                />
+              </div>
+            </div>
+          </section>
+        ) : (
+          <section id="brokers">
+            <div className="max-w-4xl mx-auto">
+              <DataBrokerList
+                breachDataClasses={[]}
+                onOptOutChange={handleOptOutChange}
+              />
+            </div>
           </section>
         )}
 
-        <section id="brokers">
-          <DataBrokerList
-            breachDataClasses={breachData?.breaches?.flatMap(b => b.DataClasses) ?? []}
-            onOptOutChange={handleOptOutChange}
-          />
-        </section>
-
         <section id="estimator">
-          <DataValueEstimator onValueChange={setEstimatedValue} />
+          <div className="max-w-4xl mx-auto">
+            <DataValueEstimator onValueChange={setEstimatedValue} />
+          </div>
         </section>
       </main>
 
