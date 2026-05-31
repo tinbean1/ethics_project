@@ -410,6 +410,18 @@ export default function DataValueEstimator({ onValueChange }) {
             <p className="text-gray-400 text-xs">per year — estimated from published platform earnings reports</p>
           </div>
 
+          {/* What you earn them callout */}
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+            <p className="text-2xl font-black text-gray-900 leading-snug">
+              You will generate approximately{' '}
+              <span className="text-red-600">${(total * 5).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>{' '}
+              for these companies over the next 5 years
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              assuming current data practices continue and your usage stays similar
+            </p>
+          </div>
+
           {/* 4-column comparison grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
@@ -457,6 +469,31 @@ export default function DataValueEstimator({ onValueChange }) {
                 <span className="font-mono text-lg text-red-600 font-black">${total.toFixed(2)}/yr</span>
               </div>
             </div>
+          </div>
+
+          {/* Average American comparison */}
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
+            <h3 className="font-semibold text-gray-900 mb-4">How You Compare to the Average American</h3>
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
+                <p className="text-3xl font-black text-gray-900">${total.toFixed(0)}</p>
+                <p className="text-xs text-gray-600 mt-1 font-medium">You</p>
+                <p className="text-xs text-gray-400">estimated annual value</p>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
+                <p className="text-3xl font-black text-gray-900">$187</p>
+                <p className="text-xs text-gray-600 mt-1 font-medium">US Average</p>
+                <p className="text-xs text-gray-400">per year</p>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
+                <p className="text-3xl font-black text-gray-900">$320</p>
+                <p className="text-xs text-gray-600 mt-1 font-medium">Heavy social user</p>
+                <p className="text-xs text-gray-400">4+ major platforms</p>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              The US digital advertising industry generated <strong className="text-gray-700">$225 billion</strong> in 2023 — approximately <strong className="text-gray-700">$670 per American adult</strong>. Source: IAB Internet Advertising Revenue Report 2023. US Average based on US digital ad spend per internet user (eMarketer 2023). Heavy social user estimate for users on 4+ major platforms.
+            </p>
           </div>
 
           {/* Pie chart */}

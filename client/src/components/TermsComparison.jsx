@@ -3,11 +3,24 @@ import React, { useState } from 'react';
 const PLATFORMS = [
   {
     name: 'Google',
-    logo: 'https://logo.clearbit.com/google.com',
+    logo: 'https://www.google.com/s2/favicons?domain=google.com&sz=128',
+    brandColor: '#4285F4',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'Google builds detailed profiles from your searches, location, YouTube history, and Gmail to serve targeted ads across its vast network of products and partner sites.',
+    partners: [
+      'Doubleclick/Google Ad Manager',
+      'Google Analytics (3M+ sites)',
+      'YouTube',
+      'Android device manufacturers',
+      'Gmail partner integrations',
+      'Google Shopping merchants',
+    ],
+    sources: [
+      { label: 'Google Privacy Policy', url: 'https://policies.google.com/privacy' },
+      { label: 'Alphabet 2023 Annual Report', url: 'https://abc.xyz/investor/' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -22,11 +35,24 @@ const PLATFORMS = [
   },
   {
     name: 'Meta (Facebook)',
-    logo: 'https://logo.clearbit.com/facebook.com',
+    logo: 'https://www.google.com/s2/favicons?domain=facebook.com&sz=128',
+    brandColor: '#1877F2',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'Meta does not technically "sell" your data but shares it extensively with advertisers and uses the Facebook Pixel to track you across millions of third-party websites.',
+    partners: [
+      'Instagram',
+      'WhatsApp',
+      'Facebook Pixel partners (10M+ sites)',
+      'Oculus/Meta Quest',
+      'CRM partners (Salesforce, HubSpot)',
+      'Audience Network publishers',
+    ],
+    sources: [
+      { label: 'Meta Privacy Policy', url: 'https://www.facebook.com/privacy/policy/' },
+      { label: 'Meta 2023 Annual Report', url: 'https://investor.fb.com/' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -41,11 +67,22 @@ const PLATFORMS = [
   },
   {
     name: 'Instagram',
-    logo: 'https://logo.clearbit.com/instagram.com',
+    logo: 'https://www.google.com/s2/favicons?domain=instagram.com&sz=128',
+    brandColor: '#E1306C',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'Owned by Meta, Instagram shares the same advertising infrastructure and data-sharing practices, tracking your activity on and off the app to serve targeted ads.',
+    partners: [
+      'Meta Platforms',
+      'Facebook Ad Network',
+      'Shopping partners (Shopify, etc.)',
+      'Creator marketplace brands',
+      'WhatsApp Business',
+    ],
+    sources: [
+      { label: 'Instagram Privacy Policy', url: 'https://privacycenter.instagram.com/policy' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -60,11 +97,23 @@ const PLATFORMS = [
   },
   {
     name: 'TikTok',
-    logo: 'https://logo.clearbit.com/tiktok.com',
+    logo: 'https://www.google.com/s2/favicons?domain=tiktok.com&sz=128',
+    brandColor: '#010101',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'TikTok collects an unusually broad set of device and behavioral data, including biometric identifiers, and its parent company ByteDance is subject to Chinese data laws.',
+    partners: [
+      'ByteDance',
+      'TikTok for Business advertisers',
+      'Creator marketplace brands',
+      'Shopify (TikTok Shopping)',
+      'Oracle (former data partner)',
+    ],
+    sources: [
+      { label: 'TikTok Privacy Policy', url: 'https://www.tiktok.com/legal/page/us/privacy-policy/en' },
+      { label: 'FTC TikTok Settlement 2023', url: 'https://www.ftc.gov/news-events/news/press-releases/2023/09/ftc-doj-charge-tiktok-knowingly-illegally-collecting-using-childrens-data' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -79,11 +128,23 @@ const PLATFORMS = [
   },
   {
     name: 'X (Twitter)',
-    logo: 'https://logo.clearbit.com/twitter.com',
+    logo: 'https://www.google.com/s2/favicons?domain=twitter.com&sz=128',
+    brandColor: '#000000',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'Since Elon Musk\'s acquisition, X updated its privacy policy to use public posts and interactions to train its Grok AI model, with opt-out buried in settings.',
+    partners: [
+      'Twitter Audience Platform',
+      'MoPub (sold 2021)',
+      'Data resellers',
+      'X Premium partners',
+      'Third-party app developers via API',
+    ],
+    sources: [
+      { label: 'X Privacy Policy', url: 'https://twitter.com/en/privacy' },
+      { label: 'X Terms of Service', url: 'https://twitter.com/en/tos' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -98,11 +159,22 @@ const PLATFORMS = [
   },
   {
     name: 'Snapchat',
-    logo: 'https://logo.clearbit.com/snapchat.com',
+    logo: 'https://www.google.com/s2/favicons?domain=snapchat.com&sz=128',
+    brandColor: '#FFFC00',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
       'Snapchat collects location and device data for ad targeting and uses your content to improve its AI and AR features, but messages between users are encrypted in transit.',
+    partners: [
+      'Snap Audience Network',
+      'AR lens brand partners',
+      'Bitmoji / Snap Kit developers',
+      'Snapchat+ brand integrations',
+      'Ad measurement partners (Nielsen, etc.)',
+    ],
+    sources: [
+      { label: 'Snap Privacy Policy', url: 'https://snap.com/en-US/privacy/privacy-policy' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -117,11 +189,23 @@ const PLATFORMS = [
   },
   {
     name: 'LinkedIn',
-    logo: 'https://logo.clearbit.com/linkedin.com',
+    logo: 'https://www.google.com/s2/favicons?domain=linkedin.com&sz=128',
+    brandColor: '#0A66C2',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
       'LinkedIn uses your professional profile, connections, and activity to serve job and B2B ads, and it shares data with its parent company Microsoft for cross-product use.',
+    partners: [
+      'Microsoft (parent company)',
+      'Microsoft Advertising',
+      'LinkedIn Learning partners',
+      'ATS/recruiting software vendors',
+      'Salesforce integration partners',
+    ],
+    sources: [
+      { label: 'LinkedIn Privacy Policy', url: 'https://www.linkedin.com/legal/privacy-policy' },
+      { label: 'Microsoft Privacy Statement', url: 'https://privacy.microsoft.com/en-us/privacystatement' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -136,11 +220,24 @@ const PLATFORMS = [
   },
   {
     name: 'Amazon',
-    logo: 'https://logo.clearbit.com/amazon.com',
+    logo: 'https://www.google.com/s2/favicons?domain=amazon.com&sz=128',
+    brandColor: '#FF9900',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'Amazon combines purchase history, browsing, Alexa voice recordings, and Prime Video viewing to build comprehensive consumer profiles used for ads and sold insights.',
+    partners: [
+      'AWS clients',
+      'Amazon DSP advertisers',
+      'Third-party marketplace sellers',
+      'Whole Foods',
+      'IMDb/Twitch/Audible',
+      'Alexa skill developers',
+    ],
+    sources: [
+      { label: 'Amazon Privacy Notice', url: 'https://www.amazon.com/gp/help/customer/display.html?nodeId=GX7NJQ4ZB8MHFRNJ' },
+      { label: 'Alexa Terms of Use', url: 'https://www.amazon.com/gp/help/customer/display.html?nodeId=GA7W9ULDG4B5JKZZ' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -155,11 +252,23 @@ const PLATFORMS = [
   },
   {
     name: 'Apple',
-    logo: 'https://logo.clearbit.com/apple.com',
+    logo: 'https://www.google.com/s2/favicons?domain=apple.com&sz=128',
+    brandColor: '#555555',
     rating: 'Transparent',
     color: 'green-600',
     summary:
       'Apple positions itself as privacy-first, processes most data on-device, does not sell personal data, and requires explicit opt-in for cross-app tracking via its ATT framework.',
+    partners: [
+      'App Store developers',
+      'Apple Advertising partners (opt-in)',
+      'Apple Pay merchants',
+      'iCloud service partners',
+      'CarPlay manufacturers',
+    ],
+    sources: [
+      { label: 'Apple Privacy Policy', url: 'https://www.apple.com/legal/privacy/' },
+      { label: 'App Store Review Guidelines', url: 'https://developer.apple.com/app-store/review/guidelines/' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: false,
@@ -174,11 +283,22 @@ const PLATFORMS = [
   },
   {
     name: 'Spotify',
-    logo: 'https://logo.clearbit.com/spotify.com',
+    logo: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=128',
+    brandColor: '#1DB954',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
       'Spotify uses listening history, mood inferences, and podcast behavior to serve targeted ads on the free tier and shares aggregated data with record labels and podcast partners.',
+    partners: [
+      'Spotify Audience Network publishers',
+      'Podcast advertising partners',
+      'Ticketmaster / Live Nation',
+      'Megaphone (podcast hosting)',
+      'Brand playlist sponsors',
+    ],
+    sources: [
+      { label: 'Spotify Privacy Policy', url: 'https://www.spotify.com/us/legal/privacy-policy/' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -193,11 +313,23 @@ const PLATFORMS = [
   },
   {
     name: 'YouTube',
-    logo: 'https://logo.clearbit.com/youtube.com',
+    logo: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=128',
+    brandColor: '#FF0000',
     rating: 'Aggressive',
     color: 'red-600',
     summary:
       'As part of Google, YouTube links your watch history, search queries, and ad interactions to your Google profile, enabling cross-platform targeting across all Google services.',
+    partners: [
+      'Google Ads (parent)',
+      'YouTube Premium brand partners',
+      'Channel memberships brands',
+      'YouTube Shopping merchants',
+      'Creator monetization partners',
+    ],
+    sources: [
+      { label: 'YouTube Privacy Policy', url: 'https://www.youtube.com/howyoutubeworks/user-settings/privacy/' },
+      { label: 'Google Privacy Policy', url: 'https://policies.google.com/privacy' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -212,11 +344,24 @@ const PLATFORMS = [
   },
   {
     name: 'Microsoft',
-    logo: 'https://logo.clearbit.com/microsoft.com',
+    logo: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
+    brandColor: '#00A4EF',
     rating: 'Moderate',
     color: 'yellow-600',
     summary:
       'Microsoft collects data across Windows, Office, Xbox, LinkedIn, and Bing, using it for ad targeting and to improve AI products like Copilot, with enterprise controls available.',
+    partners: [
+      'LinkedIn (owned)',
+      'Azure cloud clients',
+      'Microsoft Advertising partners',
+      'Xbox/gaming partners',
+      'Office 365 enterprise clients',
+      'OpenAI (partnership)',
+    ],
+    sources: [
+      { label: 'Microsoft Privacy Statement', url: 'https://privacy.microsoft.com/en-us/privacystatement' },
+      { label: 'LinkedIn Privacy Policy', url: 'https://www.linkedin.com/legal/privacy-policy' },
+    ],
     practices: {
       sellsData: false,
       sharesWithPartners: true,
@@ -282,8 +427,8 @@ function PlatformDetail({ platform }) {
           onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
         />
         <div
-          style={{ display: 'none' }}
-          className="w-16 h-16 rounded-xl bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-2xl flex-shrink-0"
+          style={{ display: 'none', backgroundColor: platform.brandColor }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center font-bold text-2xl flex-shrink-0 text-white"
         >
           {platform.name[0]}
         </div>
@@ -331,6 +476,55 @@ function PlatformDetail({ platform }) {
           </p>
         </blockquote>
       </div>
+
+      {/* Key Partners & Data Recipients */}
+      {platform.partners && platform.partners.length > 0 && (
+        <div>
+          <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-2">
+            Key Partners &amp; Data Recipients
+          </h4>
+          <p className="text-sm text-gray-500 mb-3">
+            Companies and platforms that receive or process your data under this policy.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {platform.partners.map(partner => (
+              <span
+                key={partner}
+                className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full"
+              >
+                {partner}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Sources */}
+      {platform.sources && platform.sources.length > 0 && (
+        <div>
+          <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-2">
+            Sources
+          </h4>
+          <div className="flex flex-wrap gap-1 items-center">
+            {platform.sources.map((source, i) => (
+              <span key={source.url}>
+                {i > 0 && <span className="text-gray-400 text-xs mx-1">·</span>}
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-red-600 hover:underline text-xs"
+                >
+                  {source.label}
+                </a>
+              </span>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-2">
+            Information based on publicly available privacy policies and terms of service as of 2024.
+          </p>
+        </div>
+      )}
 
       {/* Rating legend at bottom */}
       <div className="pt-2 border-t border-gray-100">
@@ -409,8 +603,8 @@ export default function TermsComparison() {
                     }}
                   />
                   <div
-                    style={{ display: 'none' }}
-                    className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg"
+                    style={{ display: 'none', backgroundColor: p.brandColor }}
+                    className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg"
                   >
                     {p.name[0]}
                   </div>
