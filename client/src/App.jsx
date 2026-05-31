@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import HomePage from './components/HomePage';
-import BreachResults from './components/BreachResults';
 import DataBrokerList from './components/DataBrokerList';
 import DataValueEstimator from './components/DataValueEstimator';
-import SummaryBanner from './components/SummaryBanner';
+import TermsComparison from './components/TermsComparison';
 
 const TABS = [
-  { id: 'breach', label: 'Breach Check' },
-  { id: 'brokers', label: 'Data Brokers' },
   { id: 'value', label: 'Data Value' },
+  { id: 'brokers', label: 'Data Brokers' },
+  { id: 'terms', label: 'Terms & Conditions' },
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('breach');
-  const [breachData, setBreachData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchedEmail, setSearchedEmail] = useState('');
+  const [activeTab, setActiveTab] = useState('value');
   const [estimatedValue, setEstimatedValue] = useState(0);
   const [optedOutCount, setOptedOutCount] = useState(0);
 
@@ -33,32 +28,11 @@ export default function App() {
 
   const handleOptOutChange = (count) => setOptedOutCount(count);
 
-  const handleSearch = async (email) => {
-    setIsLoading(true);
-    setSearchedEmail(email);
-    setBreachData(null);
-    setActiveTab('breach');
-    try {
-      const res = await fetch(`/api/breach/${encodeURIComponent(email)}`);
-      const data = await res.json();
-      setBreachData(data);
-    } catch (err) {
-      setBreachData({ error: 'Failed to connect to the server. Make sure the backend is running.' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const breachCount = breachData?.breaches?.length ?? 0;
-  const showSummary = breachData !== null && estimatedValue > 0;
-  const breachDataClasses = breachData?.breaches?.flatMap(b => b.DataClasses) ?? [];
-
   return (
     <div className="min-h-screen bg-[#F7F8FA] text-gray-900 pb-28">
       {/* Privacy banner */}
       <div className="bg-[#F3F4F6] border-b border-[#E5E7EB] py-3 px-4 text-center text-sm text-[#6B7280]">
         DataTrace does not store your email address or any personal information.
-        Your email is sent directly to HaveIBeenPwned's API and is never saved to any database.
         Opt-out progress is stored locally in your browser only.
       </div>
 
@@ -95,37 +69,21 @@ export default function App() {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-        {activeTab === 'breach' && (
-          <>
-            <HomePage onSearch={handleSearch} isLoading={isLoading} />
-            {(breachData || isLoading) && (
-              <BreachResults data={breachData} email={searchedEmail} isLoading={isLoading} />
-            )}
-          </>
+        {activeTab === 'value' && (
+          <DataValueEstimator onValueChange={setEstimatedValue} />
         )}
 
         {activeTab === 'brokers' && (
           <DataBrokerList
-            breachDataClasses={breachDataClasses}
+            breachDataClasses={[]}
             onOptOutChange={handleOptOutChange}
           />
         )}
 
-        {activeTab === 'value' && (
-          <DataValueEstimator onValueChange={setEstimatedValue} />
+        {activeTab === 'terms' && (
+          <TermsComparison />
         )}
       </main>
-
-      {showSummary && (
-        <SummaryBanner
-          breachCount={breachCount}
-          optedOutCount={optedOutCount}
-          estimatedValue={estimatedValue}
-          breachList={breachData?.breaches ?? []}
-          email={searchedEmail}
-          isMockMode={breachData?.mockMode ?? false}
-        />
-      )}
     </div>
   );
 }
