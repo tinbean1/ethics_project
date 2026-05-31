@@ -67,9 +67,23 @@ function BrokerCard({ broker, isOptedOut, onToggle }) {
     <div className={`flex items-start gap-4 p-5 rounded-xl border transition-colors ${
       isOptedOut ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-200 hover:border-gray-300'
     }`}>
-      {/* Logo / initial badge */}
-      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center font-bold text-gray-500 text-sm">
-        {initial}
+      {/* Logo */}
+      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-gray-200 flex items-center justify-center overflow-hidden">
+        {broker.logo ? (
+          <>
+            <img
+              src={broker.logo}
+              alt={broker.name}
+              className="w-6 h-6 object-contain"
+              onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+            />
+            <span style={{display:'none'}} className="w-full h-full bg-gray-100 items-center justify-center font-bold text-gray-500 text-sm flex">
+              {initial}
+            </span>
+          </>
+        ) : (
+          <span className="font-bold text-gray-500 text-sm">{initial}</span>
+        )}
       </div>
 
       <div className="flex-1 min-w-0">
